@@ -32,6 +32,7 @@ const CoordinateParts = ({
       />
       <Dropdown
         onSelect={eventKey => {
+          setSearchWord("")
           setSelectedParts(
             partsList.find(({ id }) => id.toString() === eventKey)
           )
