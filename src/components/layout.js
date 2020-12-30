@@ -44,7 +44,7 @@ const Layout = ({ children, pageInfo }) => (
           </Row>
         </Container>
         <Container fluid className="px-0">
-          {pageInfo.pageName === "index" && (
+          {pageInfo?.pageName === "index" && (
             <Row noGutters className="justify-content-center">
               <Col className="footer-col">
                 <foot>
