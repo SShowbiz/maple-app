@@ -407,7 +407,6 @@ const CoordinateSimulator = () => {
               )
             })
           }
-
           return canvas.toDataURL(options.format, options.quality)
         })
       )

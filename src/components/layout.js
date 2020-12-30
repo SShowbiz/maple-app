@@ -57,20 +57,13 @@ const Layout = ({ children, pageInfo }) => (
                 <a href="mailto:hwkim408@snu.ac.kr" style={{ color: "black" }}>
                   <FontAwesomeIcon icon={faMailBulk} size="2x" />
                 </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a
-                  href="https://www.humanscape.io/kr/index.html"
-                  style={{ color: "black" }}
-                >
-                  <FontAwesomeIcon icon={faBuilding} size="2x" />
-                </a>
               </foot>
             </Col>
           </Row>
           <Row noGutters>
             <Col className="footer-col">
               <footer>
-                <span>&copy; {new Date().getFullYear()} Built with Syarra</span>
+                <span>&copy; {new Date().getFullYear()} Built by Syarra</span>
               </footer>
             </Col>
           </Row>
