@@ -13,11 +13,35 @@ a.link-no-style {
   }
 }
 
+.context {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.custom-control-label:before {
+  background-color: red;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: orange;
+}
+
 .footer-col {
   display: flex;
   flex-direction: column;
   align-content: center;
   align-items: center;
+  foot {
+    display: flex;
+    position: relative;
+    bottom: 0;
+    margin-top: -120px;
+    height: 60px;
+    clear: both;
+    background-color: white;
+    color: white;
+    justify-content: center;
+    width: 100%;
+  }
   footer {
     display: flex;
     position: relative;

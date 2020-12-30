@@ -7,8 +7,10 @@
 
 import React from "react"
 import { StaticQuery, graphql } from "gatsby"
-
+import { faGithub, faInstagram } from "@fortawesome/free-brands-svg-icons"
+import { faMailBulk, faBuilding } from "@fortawesome/free-solid-svg-icons"
 import { Container, Row, Col } from "react-bootstrap"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Header from "./header"
 import Navbar from "./navBar"
@@ -42,14 +44,33 @@ const Layout = ({ children, pageInfo }) => (
           </Row>
         </Container>
         <Container fluid className="px-0">
+          <Row noGutters className="justify-content-center">
+            <Col className="footer-col">
+              <foot>
+                <a
+                  href="https://github.com/SShowbiz"
+                  style={{ color: "black" }}
+                >
+                  <FontAwesomeIcon icon={faGithub} size="2x" />
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="mailto:hwkim408@snu.ac.kr" style={{ color: "black" }}>
+                  <FontAwesomeIcon icon={faMailBulk} size="2x" />
+                </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a
+                  href="https://www.humanscape.io/kr/index.html"
+                  style={{ color: "black" }}
+                >
+                  <FontAwesomeIcon icon={faBuilding} size="2x" />
+                </a>
+              </foot>
+            </Col>
+          </Row>
           <Row noGutters>
             <Col className="footer-col">
               <footer>
-                <span>
-                  © {new Date().getFullYear()}, Built with
-                  {` `}
-                  <a href="https://www.gatsbyjs.org">Gatsby</a>
-                </span>
+                <span>&copy; {new Date().getFullYear()} Built with Syarra</span>
               </footer>
             </Col>
           </Row>
