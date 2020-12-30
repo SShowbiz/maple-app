@@ -6,7 +6,7 @@ import SEO from "../components/seo"
 
 const IndexPage = () => {
   return (
-    <Layout pageInfo={{ pageName: "index" }}>
+    <Layout className="layout" pageInfo={{ pageName: "index" }}>
       <SEO title="Home" keywords={[`gatsby`, `react`, `bootstrap`]} />
       <Container className="text-center">
         <Row className="justify-content-center my-3">
@@ -28,4 +28,4 @@ const IndexPage = () => {
   )
 }
 
-export default IndexPage
+export default React.memo(IndexPage)

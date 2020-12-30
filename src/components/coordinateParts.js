@@ -100,4 +100,4 @@ const CoordinateParts = ({
   )
 }
 
-export default CoordinateParts
+export default React.memo(CoordinateParts)

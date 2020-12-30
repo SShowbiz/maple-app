@@ -44,22 +44,27 @@ const Layout = ({ children, pageInfo }) => (
           </Row>
         </Container>
         <Container fluid className="px-0">
-          <Row noGutters className="justify-content-center">
-            <Col className="footer-col">
-              <foot>
-                <a
-                  href="https://github.com/SShowbiz"
-                  style={{ color: "black" }}
-                >
-                  <FontAwesomeIcon icon={faGithub} size="2x" />
-                </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="mailto:hwkim408@snu.ac.kr" style={{ color: "black" }}>
-                  <FontAwesomeIcon icon={faMailBulk} size="2x" />
-                </a>
-              </foot>
-            </Col>
-          </Row>
+          {pageInfo.pageName === "index" && (
+            <Row noGutters className="justify-content-center">
+              <Col className="footer-col">
+                <foot>
+                  <a
+                    href="https://github.com/SShowbiz"
+                    style={{ color: "black" }}
+                  >
+                    <FontAwesomeIcon icon={faGithub} size="2x" />
+                  </a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <a
+                    href="mailto:hwkim408@snu.ac.kr"
+                    style={{ color: "black" }}
+                  >
+                    <FontAwesomeIcon icon={faMailBulk} size="2x" />
+                  </a>
+                </foot>
+              </Col>
+            </Row>
+          )}
           <Row noGutters>
             <Col className="footer-col">
               <footer>
@@ -73,4 +78,4 @@ const Layout = ({ children, pageInfo }) => (
   />
 )
 
-export default Layout
+export default React.memo(Layout)

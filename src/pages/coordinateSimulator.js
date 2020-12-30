@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react"
+import React, { useEffect, useState, useMemo, useCallback } from "react"
 import axios from "axios"
 import { Row, Col, Container, Figure, Button } from "react-bootstrap"
 import download from "downloadjs"
@@ -184,45 +184,78 @@ const CoordinateSimulator = () => {
   const capeUri = selectedCape ? changeToUri(selectedCape.id) : ""
   const weaponUri = selectedWeapon ? changeToUri(selectedWeapon.id) : ""
 
-  const imageBaseUri =
-    "https://maplestory.io/api/Character/" +
-    skinUri +
-    encodeURIComponent(
-      hairBaseUri +
-        faceBaseUri +
-        faceAccessoryUri +
-        eyeDecorationUri +
-        hatUri +
-        overallUri +
-        topUri +
-        bottomUri +
-        shoesUri +
-        capeUri +
-        weaponUri
-    ) +
-    "/" +
-    "stand1" +
-    "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+  const imageBaseUri = useMemo(() => {
+    return (
+      "https://maplestory.io/api/Character/" +
+      skinUri +
+      encodeURIComponent(
+        hairBaseUri +
+          faceBaseUri +
+          faceAccessoryUri +
+          eyeDecorationUri +
+          hatUri +
+          overallUri +
+          topUri +
+          bottomUri +
+          shoesUri +
+          capeUri +
+          weaponUri
+      ) +
+      "/" +
+      "stand1" +
+      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+    )
+  }, [
+    skinUri,
+    hairBaseUri,
+    faceBaseUri,
+    faceAccessoryUri,
+    eyeDecorationUri,
+    hatUri,
+    overallUri,
+    topUri,
+    bottomUri,
+    shoesUri,
+    capeUri,
+    weaponUri,
+  ])
 
-  const imageMixUri =
-    "https://maplestory.io/api/Character/" +
-    skinUri +
-    encodeURIComponent(
-      hairMixUri +
-        faceMixUri +
-        faceAccessoryUri +
-        eyeDecorationUri +
-        hatUri +
-        overallUri +
-        topUri +
-        bottomUri +
-        shoesUri +
-        capeUri +
-        weaponUri
-    ) +
-    "/" +
-    "stand1" +
-    "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+  const imageMixUri = useMemo(() => {
+    return (
+      "https://maplestory.io/api/Character/" +
+      skinUri +
+      encodeURIComponent(
+        hairMixUri +
+          faceMixUri +
+          faceAccessoryUri +
+          eyeDecorationUri +
+          hatUri +
+          overallUri +
+          topUri +
+          bottomUri +
+          shoesUri +
+          capeUri +
+          weaponUri
+      ) +
+      "/" +
+      "stand1" +
+      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+    )
+  }, [
+    skinUri,
+    hairMixUri,
+    faceMixUri,
+    faceAccessoryUri,
+    eyeDecorationUri,
+    hatUri,
+    overallUri,
+    topUri,
+    bottomUri,
+    shoesUri,
+    capeUri,
+    weaponUri,
+  ])
+  const [imageUri, setImageUri] = useState(imageBaseUri)
 
   const fetchData = async () => {
     const { data } = await axios.get(
@@ -412,7 +445,6 @@ const CoordinateSimulator = () => {
       )
     })
   }
-  const [imageUri, setImageUri] = useState(imageBaseUri)
 
   useEffect(() => {
     mergeImages([
@@ -430,11 +462,13 @@ const CoordinateSimulator = () => {
         style={{
           margin: `0 auto`,
           maxWidth: 960,
-          "overflow-y": "auto",
         }}
       >
         <Row>
-          <Col className="col-lg-10">
+          <Col
+            className="col-lg-10"
+            style={{ "overflow-y": "auto", "max-height": "700px" }}
+          >
             <CoordinateParts
               partsName="피부"
               searchKeyWord={skinSearch}
@@ -598,15 +632,11 @@ const CoordinateSimulator = () => {
             <div>
               <Row className="justify-content-center">
                 <Figure.Image src={imageUri} />
-                {/* <Figure.Image
-                  src={imageMixUri}
-                  style={{ opacity: 0.3333, position: "absolute" }}
-                /> */}
               </Row>
               <Row className="justify-content-center">
                 <Button
                   variant="primary"
-                  onClick={() => forceDownload(imageBaseUri)}
+                  onClick={() => forceDownload(imageUri)}
                 >
                   다운로드
                 </Button>
@@ -619,4 +649,4 @@ const CoordinateSimulator = () => {
   )
 }
 
-export default CoordinateSimulator
+export default React.memo(CoordinateSimulator)

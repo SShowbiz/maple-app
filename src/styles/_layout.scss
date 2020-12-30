@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 div.main {
   min-height: 100vh;
   padding-bottom: 60px;
@@ -59,4 +60,8 @@ a.link-no-style {
       text-align: center;
     }
   }
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
 }

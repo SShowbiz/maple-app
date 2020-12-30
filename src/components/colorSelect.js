@@ -33,7 +33,7 @@ const ColorSelect = ({
     >
       <Form.Control
         plaintext
-        style={{ width: "70px", "font-size": "14px" }}
+        style={{ width: "81px", "font-size": "14px" }}
         value="베이스 컬러"
       />
       {colorList?.map(({ colorCode, color }) => (
@@ -46,7 +46,7 @@ const ColorSelect = ({
       &nbsp;
       <Form.Control
         plaintext
-        style={{ width: "60px", "font-size": "14px" }}
+        style={{ width: "70px", "font-size": "14px" }}
         value="믹스 컬러"
       />
       {colorList?.map(({ colorCode, color }) => (
@@ -58,4 +58,4 @@ const ColorSelect = ({
   )
 }
 
-export default ColorSelect
+export default React.memo(ColorSelect)
