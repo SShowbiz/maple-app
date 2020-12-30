@@ -422,7 +422,7 @@ const CoordinateSimulator = () => {
     ]).then(b64 => {
       setImageUri(b64)
     })
-  }, [imageBaseUri, imageMixUri])
+  }, [imageBaseUri, imageMixUri, mergeImages])
 
   return (
     <Layout pageInfo={{ pageName: "page-2" }}>
