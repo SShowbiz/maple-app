@@ -9,11 +9,14 @@ import React from "react"
 import { StaticQuery, graphql } from "gatsby"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
 import { faMailBulk, faBuilding } from "@fortawesome/free-solid-svg-icons"
+import { faMailBulk } from "@fortawesome/free-solid-svg-icons"
 import { Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import Header from "./header"
 import Navbar from "./navBar"
+import "bootstrap/dist/css/bootstrap.css"
+import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css"
 
 const Layout = ({ children, pageInfo }) => (
   <StaticQuery
