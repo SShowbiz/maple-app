@@ -6,6 +6,7 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import CoordinateParts from "../components/coordinateParts"
 import ColorSelect from "../components/colorSelect"
+import MixRatio from "../components/mixRatio"
 
 const VERSION = "340"
 const REGION = "KMS"
@@ -59,51 +60,77 @@ const CoordinateSimulator = () => {
   const [faceBaseColor, setFaceBaseColor] = useState(null)
   const [faceMixColor, setFaceMixColor] = useState(null)
 
-  const changeToList = (data, search) => {
+  const [hairMixValue, setHairMixValue] = useState(50)
+  const [faceMixValue, setFaceMixValue] = useState(50)
+
+  const changeToList = useCallback((data, search) => {
     if (!data) return []
+    if (search === "") {
+      return Object.keys(data).map(selectedKey => ({
+        id: data[selectedKey],
+        name: selectedKey,
+      }))
+    }
     return Object.keys(data)
       .filter(key => key?.includes(search))
       .map(selectedKey => ({
         id: data[selectedKey],
         name: selectedKey,
       }))
-  }
+  }, [])
+
+  const changeToSearchList = useCallback((data, searchWord) => {
+    if (searchWord === "") return data
+    return data ? data.filter(({ name }) => name.includes(searchWord)) : []
+  }, [])
+
   const hairList = useMemo(() => {
-    return changeToList(hairData, hairSearch)
-  }, [hairData, hairSearch])
+    return changeToSearchList(hairData, hairSearch)
+  }, [hairData, hairSearch, changeToSearchList])
+
   const faceList = useMemo(() => {
-    return changeToList(faceData, faceSearch)
-  }, [faceData, faceSearch])
+    return changeToSearchList(faceData, faceSearch)
+  }, [faceData, faceSearch, changeToSearchList])
+
   const skinList = useMemo(() => {
-    return changeToList(skinData, skinSearch)
-  }, [skinData, skinSearch])
+    return changeToSearchList(skinData, skinSearch)
+  }, [skinData, skinSearch, changeToSearchList])
+
   const faceAccessoryList = useMemo(() => {
-    return changeToList(faceAccessoryData, faceAccessorySearch)
-  }, [faceAccessoryData, faceAccessorySearch])
+    return changeToSearchList(faceAccessoryData, faceAccessorySearch)
+  }, [faceAccessoryData, faceAccessorySearch, changeToSearchList])
+
   const eyeDecorationList = useMemo(() => {
-    return changeToList(eyeDecorationData, eyeDecorationSearch)
-  }, [eyeDecorationData, eyeDecorationSearch])
+    return changeToSearchList(eyeDecorationData, eyeDecorationSearch)
+  }, [eyeDecorationData, eyeDecorationSearch, changeToSearchList])
+
   const hatList = useMemo(() => {
-    return changeToList(hatData, hatSearch)
-  }, [hatData, hatSearch])
+    return changeToSearchList(hatData, hatSearch)
+  }, [hatData, hatSearch, changeToSearchList])
+
   const overallList = useMemo(() => {
-    return changeToList(overallData, overallSearch)
-  }, [overallData, overallSearch])
+    return changeToSearchList(overallData, overallSearch)
+  }, [overallData, overallSearch, changeToSearchList])
+
   const topList = useMemo(() => {
-    return changeToList(topData, topSearch)
-  }, [topData, topSearch])
+    return changeToSearchList(topData, topSearch)
+  }, [topData, topSearch, changeToSearchList])
+
   const bottomList = useMemo(() => {
-    return changeToList(bottomData, bottomSearch)
-  }, [bottomData, bottomSearch])
+    return changeToSearchList(bottomData, bottomSearch)
+  }, [bottomData, bottomSearch, changeToSearchList])
+
   const shoesList = useMemo(() => {
-    return changeToList(shoesData, shoesSearch)
-  }, [shoesData, shoesSearch])
+    return changeToSearchList(shoesData, shoesSearch)
+  }, [shoesData, shoesSearch, changeToSearchList])
+
   const capeList = useMemo(() => {
-    return changeToList(capeData, capeSearch)
-  }, [capeData, capeSearch])
+    return changeToSearchList(capeData, capeSearch)
+  }, [capeData, capeSearch, changeToSearchList])
+
   const weaponList = useMemo(() => {
-    return changeToList(weaponData, weaponSearch)
-  }, [weaponData, weaponSearch])
+    return changeToSearchList(weaponData, weaponSearch)
+  }, [weaponData, weaponSearch, changeToSearchList])
 
   const skinUri = encodeURIComponent(
     '{"itemId":' +
@@ -184,7 +211,7 @@ const CoordinateSimulator = () => {
   const capeUri = selectedCape ? changeToUri(selectedCape.id) : ""
   const weaponUri = selectedWeapon ? changeToUri(selectedWeapon.id) : ""
 
-  const imageBaseUri = useMemo(() => {
+  const imageHairBaseFaceBaseUri = useMemo(() => {
     return (
       "https://maplestory.io/api/Character/" +
       skinUri +
@@ -220,7 +247,79 @@ const CoordinateSimulator = () => {
     weaponUri,
   ])
 
-  const imageMixUri = useMemo(() => {
+  const imageHairMixFaceBaseUri = useMemo(() => {
+    return (
+      "https://maplestory.io/api/Character/" +
+      skinUri +
+      encodeURIComponent(
+        hairMixUri +
+          faceBaseUri +
+          faceAccessoryUri +
+          eyeDecorationUri +
+          hatUri +
+          overallUri +
+          topUri +
+          bottomUri +
+          shoesUri +
+          capeUri +
+          weaponUri
+      ) +
+      "/" +
+      "stand1" +
+      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+    )
+  }, [
+    skinUri,
+    hairMixUri,
+    faceBaseUri,
+    faceAccessoryUri,
+    eyeDecorationUri,
+    hatUri,
+    overallUri,
+    topUri,
+    bottomUri,
+    shoesUri,
+    capeUri,
+    weaponUri,
+  ])
+
+  const imageHairBaseFaceMixUri = useMemo(() => {
+    return (
+      "https://maplestory.io/api/Character/" +
+      skinUri +
+      encodeURIComponent(
+        hairBaseUri +
+          faceMixUri +
+          faceAccessoryUri +
+          eyeDecorationUri +
+          hatUri +
+          overallUri +
+          topUri +
+          bottomUri +
+          shoesUri +
+          capeUri +
+          weaponUri
+      ) +
+      "/" +
+      "stand1" +
+      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+    )
+  }, [
+    skinUri,
+    hairBaseUri,
+    faceMixUri,
+    faceAccessoryUri,
+    eyeDecorationUri,
+    hatUri,
+    overallUri,
+    topUri,
+    bottomUri,
+    shoesUri,
+    capeUri,
+    weaponUri,
+  ])
+
+  const imageHairMixFaceMixUri = useMemo(() => {
     return (
       "https://maplestory.io/api/Character/" +
       skinUri +
@@ -255,9 +354,10 @@ const CoordinateSimulator = () => {
     capeUri,
     weaponUri,
   ])
-  const [imageUri, setImageUri] = useState(imageBaseUri)
 
-  const fetchData = async () => {
+  const [imageUri, setImageUri] = useState(imageHairBaseFaceBaseUri)
+
+  const fetchData = useCallback(async () => {
     const { data } = await axios.get(
       "https://maplestory.io/api/KMS/340/item/category/equip"
     )
@@ -322,19 +422,19 @@ const CoordinateSimulator = () => {
         weaponObj[item.name] = item.id
       }
     })
-    setHairData(hairObj)
-    setFaceData(faceObj)
-    setSkinData(skinObj)
-    setFaceAccessoryData(faceAccessoryObj)
-    setEyeDecorationData(eyeDecorationObj)
-    setHatData(hatObj)
-    setOverallData(overallObj)
-    setTopData(topObj)
-    setBottomData(bottomObj)
-    setShoesData(shoesObj)
-    setCapeData(capeObj)
-    setWeaponData(weaponObj)
-  }
+    setHairData(changeToList(hairObj, ""))
+    setFaceData(changeToList(faceObj, ""))
+    setSkinData(changeToList(skinObj, ""))
+    setFaceAccessoryData(changeToList(faceAccessoryObj, ""))
+    setEyeDecorationData(changeToList(eyeDecorationObj, ""))
+    setHatData(changeToList(hatObj, ""))
+    setOverallData(changeToList(overallObj, ""))
+    setTopData(changeToList(topObj, ""))
+    setBottomData(changeToList(bottomObj, ""))
+    setShoesData(changeToList(shoesObj, ""))
+    setCapeData(changeToList(capeObj, ""))
+    setWeaponData(changeToList(weaponObj, ""))
+  }, [changeToList])
 
   const forceDownload = url => {
     const xhr = new XMLHttpRequest()
@@ -349,7 +449,7 @@ const CoordinateSimulator = () => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
   useEffect(() => {
     if (selectedHair) {
@@ -373,91 +473,138 @@ const CoordinateSimulator = () => {
     Canvas: undefined,
   }
 
-  const mergeImages = function(sources, options) {
-    if (sources === void 0) sources = []
-    if (options === void 0) options = {}
-    return new Promise(function(resolve) {
-      options = Object.assign({}, defaultOptions, options)
-      var canvas = options.Canvas
-        ? new options.Canvas()
-        : window.document.createElement("canvas")
-      var Image = options.Canvas ? options.Canvas.Image : window.Image
-      if (options.Canvas) {
-        options.quality *= 100
-      }
-      var images = sources.map(function(source) {
-        return new Promise(function(resolve, reject) {
-          if (source.constructor.name !== "Object") {
-            source = { src: source }
-          }
-          var img = new Image()
-          img.crossOrigin = "Anonymous"
-          img.onerror = function() {
-            return reject(new Error("Couldn't load image"))
-          }
-          img.onload = function() {
-            return resolve(Object.assign({}, source, { img: img }))
-          }
-          img.src = source.src
-        })
-      })
-      var ctx = canvas.getContext("2d")
-      resolve(
-        Promise.all(images).then(function(images) {
-          var getSize = function(dim) {
-            return (
-              options[dim] ||
-              Math.max.apply(
-                Math,
-                images.map(function(image) {
-                  return image.img[dim]
-                })
-              )
-            )
-          }
-          canvas.width = getSize("width")
-          canvas.height = getSize("height")
-
-          images.forEach(function(image) {
-            ctx.globalAlpha = image.opacity ? image.opacity : 1
-            return ctx.drawImage(image.img, image.x || 0, image.y || 0)
+  const mergeImages = useCallback(
+    (sources, options) => {
+      if (sources === void 0) sources = []
+      if (options === void 0) options = {}
+      return new Promise(function(resolve) {
+        options = Object.assign({}, defaultOptions, options)
+        var canvas = options.Canvas
+          ? new options.Canvas()
+          : window.document.createElement("canvas")
+        var Image = options.Canvas ? options.Canvas.Image : window.Image
+        if (options.Canvas) {
+          options.quality *= 100
+        }
+        var images = sources.map(function(source) {
+          return new Promise(function(resolve, reject) {
+            if (source.constructor.name !== "Object") {
+              source = { src: source }
+            }
+            var img = new Image()
+            img.crossOrigin = "Anonymous"
+            img.onerror = function() {
+              return reject(new Error("Couldn't load image"))
+            }
+            img.onload = function() {
+              return resolve(Object.assign({}, source, { img: img }))
+            }
+            img.src = source.src
           })
-
-          if (options.Canvas && options.format === "image/jpeg") {
-            return new Promise(function(resolve) {
-              canvas.toDataURL(
-                options.format,
-                {
-                  quality: options.quality,
-                  progressive: false,
-                },
-                function(err, jpeg) {
-                  if (err) {
-                    throw err
-                  }
-                  resolve(jpeg)
-                }
-              )
-            })
-          }
-          return canvas.toDataURL(options.format, options.quality)
         })
-      )
-    })
-  }
+        var ctx = canvas.getContext("2d")
+        resolve(
+          Promise.all(images).then(function(images) {
+            var getSize = function(dim) {
+              return (
+                options[dim] ||
+                Math.max.apply(
+                  Math,
+                  images.map(function(image) {
+                    return image.img[dim]
+                  })
+                )
+              )
+            }
+            canvas.width = getSize("width")
+            canvas.height = getSize("height")
+
+            images.forEach(function(image) {
+              ctx.globalAlpha = image.opacity ? image.opacity : 1
+              return ctx.drawImage(image.img, image.x || 0, image.y || 0)
+            })
+
+            if (options.Canvas && options.format === "image/jpeg") {
+              return new Promise(function(resolve) {
+                canvas.toDataURL(
+                  options.format,
+                  {
+                    quality: options.quality,
+                    progressive: false,
+                  },
+                  function(err, jpeg) {
+                    if (err) {
+                      throw err
+                    }
+                    resolve(jpeg)
+                  }
+                )
+              })
+            }
+            return canvas.toDataURL(options.format, options.quality)
+          })
+        )
+      })
+    },
+    [defaultOptions]
+  )
 
   useEffect(() => {
-    mergeImages([
-      { src: imageBaseUri },
-      { src: imageMixUri, opacity: 0.5 },
-    ]).then(b64 => {
+    let imageList = [{ src: imageHairBaseFaceBaseUri }]
+    const hairMixVal = hairMixValue * 1
+    const faceMixVal = faceMixValue * 1
+    if (hairMixVal < 1 && faceMixVal > 0) {
+      imageList.push({
+        src: imageHairBaseFaceMixUri,
+        opacity: faceMixVal / 100,
+      })
+    } else if (hairMixVal > 0 && faceMixVal < 1) {
+      imageList.push({
+        src: imageHairMixFaceBaseUri,
+        opacity: hairMixVal / 100,
+      })
+    } else if (hairMixVal > 0 && faceMixVal > 0) {
+      if (hairMixVal === faceMixVal) {
+        imageList.push({
+          src: imageHairMixFaceMixUri,
+          opacity: faceMixVal / 100,
+        })
+      } else if (hairMixVal > faceMixVal) {
+        imageList.push({
+          src: imageHairMixFaceBaseUri,
+          opacity: 1 - (100 - hairMixVal) / (100 - faceMixVal),
+        })
+        imageList.push({
+          src: imageHairMixFaceMixUri,
+          opacity: faceMixVal / 100,
+        })
+      } else {
+        imageList.push({
+          src: imageHairBaseFaceMixUri,
+          opacity: 1 - (100 - faceMixVal) / (100 - hairMixVal),
+        })
+        imageList.push({
+          src: imageHairMixFaceMixUri,
+          opacity: hairMixVal / 100,
+        })
+      }
+    }
+    mergeImages(imageList).then(b64 => {
       setImageUri(b64)
     })
-  }, [imageBaseUri, imageMixUri, mergeImages])
+  }, [
+    imageHairBaseFaceBaseUri,
+    imageHairMixFaceBaseUri,
+    imageHairMixFaceMixUri,
+    imageHairBaseFaceMixUri,
+    hairMixValue,
+    faceMixValue,
+    mergeImages,
+  ])
 
   return (
-    <Layout pageInfo={{ pageName: "page-2" }}>
-      <SEO title="Page two" />
+    <Layout pageInfo={{ pageName: "coordinateSimulator" }}>
+      <SEO title="Coordinate Simulator" />
       <Container
         style={{
           margin: `0 auto`,
@@ -503,6 +650,7 @@ const CoordinateSimulator = () => {
               mixColor={hairMixColor}
               setMixColor={setHairMixColor}
             />
+            <MixRatio mixValue={hairMixValue} setMixValue={setHairMixValue} />
             <CoordinateParts
               partsName="성형"
               searchKeyWord={faceSearch}
@@ -528,6 +676,7 @@ const CoordinateSimulator = () => {
               mixColor={faceMixColor}
               setMixColor={setFaceMixColor}
             />
+            <MixRatio mixValue={faceMixValue} setMixValue={setFaceMixValue} />
             <CoordinateParts
               partsName="얼굴 장식"
               searchKeyWord={faceAccessorySearch}
