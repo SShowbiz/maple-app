@@ -8,7 +8,6 @@
 import React from "react"
 import { StaticQuery, graphql } from "gatsby"
 import { faGithub } from "@fortawesome/free-brands-svg-icons"
-import { faMailBulk, faBuilding } from "@fortawesome/free-solid-svg-icons"
 import { faMailBulk } from "@fortawesome/free-solid-svg-icons"
 import { Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
