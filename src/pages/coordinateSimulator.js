@@ -54,11 +54,11 @@ const CoordinateSimulator = () => {
   const [selectedCape, setSelectedCape] = useState(null)
   const [selectedWeapon, setSelectedWeapon] = useState(null)
 
-  const [hairBaseColor, setHairBaseColor] = useState(null)
-  const [hairMixColor, setHairMixColor] = useState(null)
+  const [hairBaseColor, setHairBaseColor] = useState("black")
+  const [hairMixColor, setHairMixColor] = useState("black")
 
-  const [faceBaseColor, setFaceBaseColor] = useState(null)
-  const [faceMixColor, setFaceMixColor] = useState(null)
+  const [faceBaseColor, setFaceBaseColor] = useState("black")
+  const [faceMixColor, setFaceMixColor] = useState("black")
 
   const [hairMixValue, setHairMixValue] = useState(50)
   const [faceMixValue, setFaceMixValue] = useState(50)
@@ -650,7 +650,12 @@ const CoordinateSimulator = () => {
               mixColor={hairMixColor}
               setMixColor={setHairMixColor}
             />
-            <MixRatio mixValue={hairMixValue} setMixValue={setHairMixValue} />
+            <MixRatio
+              mixValue={hairMixValue}
+              setMixValue={setHairMixValue}
+              selectedBaseColor={hairBaseColor}
+              selectedMixColor={hairMixColor}
+            />
             <CoordinateParts
               partsName="성형"
               searchKeyWord={faceSearch}
@@ -676,7 +681,12 @@ const CoordinateSimulator = () => {
               mixColor={faceMixColor}
               setMixColor={setFaceMixColor}
             />
-            <MixRatio mixValue={faceMixValue} setMixValue={setFaceMixValue} />
+            <MixRatio
+              mixValue={faceMixValue}
+              setMixValue={setFaceMixValue}
+              selectedBaseColor={faceBaseColor}
+              selectedMixColor={faceMixColor}
+            />
             <CoordinateParts
               partsName="얼굴 장식"
               searchKeyWord={faceAccessorySearch}

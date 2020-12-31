@@ -2,7 +2,24 @@ import React from "react"
 import { Row, Col, Form } from "react-bootstrap"
 import RangeSlider from "react-bootstrap-range-slider"
 
-const MixRatio = ({ mixValue, setMixValue }) => {
+const MixRatio = ({
+  mixValue,
+  setMixValue,
+  selectedBaseColor,
+  selectedMixColor,
+}) => {
+  const colorMap = {
+    red: "빨",
+    orange: "주",
+    yellow: "노",
+    green: "초",
+    blue: "파",
+    purple: "보",
+    black: "검",
+    brown: "갈",
+    emerald: "에",
+    amethyst: "자",
+  }
   return (
     <div>
       <Row>
@@ -17,7 +34,18 @@ const MixRatio = ({ mixValue, setMixValue }) => {
               <RangeSlider
                 size="sm"
                 variant="dark"
-                tooltipLabel={currentValue => `${currentValue}%`}
+                tooltipLabel={currentValue => {
+                  if (selectedBaseColor === selectedMixColor) {
+                    return `${colorMap[selectedBaseColor]}`
+                  }
+                  return `${colorMap[selectedBaseColor] +
+                    " " +
+                    currentValue +
+                    " " +
+                    colorMap[selectedMixColor] +
+                    " " +
+                    (100 - currentValue)}`
+                }}
                 tooltip="on"
                 value={mixValue}
                 onChange={changeEvent => setMixValue(changeEvent.target.value)}
