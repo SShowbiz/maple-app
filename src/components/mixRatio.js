@@ -40,11 +40,11 @@ const MixRatio = ({
                   }
                   return `${colorMap[selectedBaseColor] +
                     " " +
-                    currentValue +
+                    (100 - currentValue) +
                     " " +
                     colorMap[selectedMixColor] +
                     " " +
-                    (100 - currentValue)}`
+                    currentValue}`
                 }}
                 tooltip="on"
                 value={mixValue}
