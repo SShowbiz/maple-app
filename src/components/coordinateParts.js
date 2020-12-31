@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Row, Dropdown, Form, Figure, Button } from "react-bootstrap"
 
 const VERSION = "340"
@@ -12,6 +12,15 @@ const CoordinateParts = ({
   setSelectedParts,
   partsList,
 }) => {
+  const [initialize, setInitialize] = useState(false)
+
+  useEffect(() => {
+    if (initialize) {
+      setSearchWord("")
+      setInitialize(false)
+    }
+  }, [initialize, setSearchWord])
+
   return (
     <Row
       style={{
@@ -32,7 +41,7 @@ const CoordinateParts = ({
       />
       <Dropdown
         onSelect={eventKey => {
-          setSearchWord("")
+          setInitialize(true)
           setSelectedParts(
             partsList.find(({ id }) => id.toString() === eventKey)
           )
