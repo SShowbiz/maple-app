@@ -21,6 +21,7 @@ const MixRatio = ({ mixValue, setMixValue }) => {
                 tooltip="on"
                 value={mixValue}
                 onChange={changeEvent => setMixValue(changeEvent.target.value)}
+                tooltipStyle={{ zIndex: 0 }}
               />
             </Col>
           </Row>
