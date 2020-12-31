@@ -1,5 +1,5 @@
 import React from "react"
-import { Row, Form, Button } from "react-bootstrap"
+import { Row, Col, Form, Button } from "react-bootstrap"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -23,37 +23,51 @@ const ColorSelect = ({
       "justify-content": "center",
     }
   }
+  const baseColorTable = colorList?.map(({ colorCode, color }) => (
+    <Button style={styleObj(colorCode)} onClick={() => setBaseColor(color)}>
+      {baseColor === color && <FontAwesomeIcon icon={faCheck} size="0.5x" />}
+    </Button>
+  ))
+  const mixColorTable = colorList?.map(({ colorCode, color }) => (
+    <Button style={styleObj(colorCode)} onClick={() => setMixColor(color)}>
+      {mixColor === color && <FontAwesomeIcon icon={faCheck} size="0.5x" />}
+    </Button>
+  ))
 
   return (
-    <Row
-      style={{
-        display: "flex",
-        "align-items": "center",
-      }}
-    >
-      <Form.Control
-        plaintext
-        style={{ width: "81px", "font-size": "14px" }}
-        value="베이스 컬러"
-      />
-      {colorList?.map(({ colorCode, color }) => (
-        <Button style={styleObj(colorCode)} onClick={() => setBaseColor(color)}>
-          {baseColor === color && (
-            <FontAwesomeIcon icon={faCheck} size="0.5x" />
-          )}
-        </Button>
-      ))}
-      &nbsp;
-      <Form.Control
-        plaintext
-        style={{ width: "70px", "font-size": "14px" }}
-        value="믹스 컬러"
-      />
-      {colorList?.map(({ colorCode, color }) => (
-        <Button style={styleObj(colorCode)} onClick={() => setMixColor(color)}>
-          {mixColor === color && <FontAwesomeIcon icon={faCheck} size="0.5x" />}
-        </Button>
-      ))}
+    <Row>
+      <Col className="col-lg-5">
+        <Row
+          style={{
+            display: "flex",
+            "align-items": "center",
+          }}
+        >
+          <Form.Control
+            plaintext
+            style={{ width: "81px", "font-size": "14px" }}
+            value="베이스 컬러"
+          />
+          {baseColorTable}
+        </Row>
+      </Col>
+
+      <Col className="col-lg-5">
+        <Row
+          style={{
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "flex-end",
+          }}
+        >
+          <Form.Control
+            plaintext
+            style={{ width: "70px", "font-size": "14px" }}
+            value="믹스 컬러"
+          />
+          {mixColorTable}
+        </Row>
+      </Col>
     </Row>
   )
 }
