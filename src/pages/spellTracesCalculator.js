@@ -164,7 +164,7 @@ const SpellTracesCalculator = () => {
   }, [fetchData])
 
   const styleObj = {
-    width: "150px",
+    width: "158px",
     height: "38px",
     border: "none",
     "border-radius": "4px",
