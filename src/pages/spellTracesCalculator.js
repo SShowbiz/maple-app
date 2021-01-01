@@ -16,7 +16,13 @@ import spellTracesCalculation from "../img/spellTraces/spellTracesCalculation.sv
 
 const VERSION = "340"
 const REGION = "KMS"
-
+const ascending = (firstItem, secondItem) => {
+  return firstItem.name < secondItem.name
+    ? -1
+    : firstItem.name > secondItem.name
+    ? 1
+    : 0
+}
 const SpellTracesCalculator = () => {
   const [necroSet, setNecroSet] = useState(null)
   const [vonLeonSet, setVonLeonSet] = useState(null)
@@ -144,12 +150,12 @@ const SpellTracesCalculator = () => {
       }
     })
 
-    setNecroSet(objToList(necroObj))
-    setVonLeonSet(objToList(vonLeonObj))
-    setSignusSet(objToList(signusObj))
-    setRootAbyssSet(objToList(rootAbyssObj))
-    setAbsolabsSet(objToList(absolabsObj))
-    setArcaneshadeSet(objToList(arcaneshadeObj))
+    setNecroSet(objToList(necroObj).sort(ascending))
+    setVonLeonSet(objToList(vonLeonObj).sort(ascending))
+    setSignusSet(objToList(signusObj).sort(ascending))
+    setRootAbyssSet(objToList(rootAbyssObj).sort(ascending))
+    setAbsolabsSet(objToList(absolabsObj).sort(ascending))
+    setArcaneshadeSet(objToList(arcaneshadeObj).sort(ascending))
   }, [])
 
   useEffect(() => {
