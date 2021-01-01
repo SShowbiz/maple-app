@@ -378,9 +378,9 @@ const CoordinateSimulator = () => {
       if (
         item.typeInfo.subCategory === "Hair" &&
         item.name.includes("검은색") &&
-        !hairObj[item.name]
+        !hairObj[item.name.replace("검은색", "")]
       ) {
-        hairObj[item.name] = item.id
+        hairObj[item.name.replace("검은색", "")] = item.id
       }
       if (item.typeInfo.subCategory === "Face" && !faceObj[item.name]) {
         faceObj[item.name] = item.id
