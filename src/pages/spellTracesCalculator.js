@@ -157,19 +157,6 @@ const SpellTracesCalculator = () => {
     fetchData()
   }, [fetchData])
 
-  // console.log(weaponMainStats)
-  // console.log(weaponSubStats)
-  // console.log(weaponEnforceNumber)
-  console.log(selectedWeaponList)
-  // console.log(vonLeonSet)
-  // console.log(signusSet)
-  // console.log(rootAbyssSet)
-  // console.log(absolabsSet)
-  // console.log(arcaneshadeSet)
-
-  // 보스 방어구/무기 세트 - 방어구, 무기
-  // 보스 장신구 세트
-
   const styleObj = {
     width: "150px",
     height: "38px",
