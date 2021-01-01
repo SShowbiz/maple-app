@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 
 import { Navbar, Nav } from "react-bootstrap"
 
-const CustomNavbar = ({ pageInfo }) => {
+const CustomNavbar = ({ pageInfo, renderFunc }) => {
   console.log(pageInfo)
   return (
     <>
@@ -23,8 +23,21 @@ const CustomNavbar = ({ pageInfo }) => {
         >
           <Nav className="mr-auto" activeKey={pageInfo && pageInfo.pageName}>
             <Link to="/coordinateSimulator" className="link-no-style">
-              <Nav.Link as="span" eventKey="coordinateSimulator">
+              <Nav.Link
+                as="span"
+                eventKey="coordinateSimulator"
+                onSelect={renderFunc}
+              >
                 코디 시뮬레이터
+              </Nav.Link>
+            </Link>
+            <Link to="/spellTracesCalculator" className="link-no-style">
+              <Nav.Link
+                as="span"
+                eventKey="spellTracesCalculator"
+                onSelect={renderFunc}
+              >
+                주흔 작 상태 계산기
               </Nav.Link>
             </Link>
             {/* <Link to="/page-2" className="link-no-style">

@@ -17,7 +17,7 @@ import Navbar from "./navBar"
 import "bootstrap/dist/css/bootstrap.css"
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css"
 
-const Layout = ({ children, pageInfo }) => (
+const Layout = ({ children, pageInfo, renderFunc }) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {
@@ -36,7 +36,7 @@ const Layout = ({ children, pageInfo }) => (
               <Header siteTitle={data.site.siteMetadata.title} />
             </Col>
           </Row>
-          <Navbar pageInfo={pageInfo} />
+          <Navbar pageInfo={pageInfo} renderFunc={renderFunc} />
           <Row noGutters>
             <Col>
               <Container className="mt-5">
