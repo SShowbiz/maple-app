@@ -344,7 +344,7 @@ const SpellTracesCalculator = () => {
                       ({ id }) => id.toString() === eventKey
                     )
                   )
-                  setWeaponEnforceNumber(0)
+                  setWeaponEnforceNumber(1)
                   setWeaponMainStats(0)
                   setWeaponSubStats(0)
                 }}
@@ -478,7 +478,7 @@ const SpellTracesCalculator = () => {
                         />
                         <Form.Control
                           type="number"
-                          min={0}
+                          min={1}
                           placeholder={`주문서 작 횟수`}
                           style={{ width: "180px", "margin-bottom": "2px" }}
                           value={weaponEnforceNumber}
