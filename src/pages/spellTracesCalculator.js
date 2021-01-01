@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import {
   Row,
@@ -9,7 +9,6 @@ import {
   Dropdown,
   Form,
 } from "react-bootstrap"
-import download from "downloadjs"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import spellTracesExplanation from "../img/spellTraces/spellTracesExplanation.svg"
