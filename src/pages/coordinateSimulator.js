@@ -8,7 +8,7 @@ import CoordinateParts from "../components/coordinateParts"
 import ColorSelect from "../components/colorSelect"
 import MixRatio from "../components/mixRatio"
 
-const VERSION = "340"
+const VERSION = "341"
 const REGION = "KMS"
 
 const CoordinateSimulator = () => {

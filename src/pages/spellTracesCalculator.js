@@ -14,7 +14,7 @@ import SEO from "../components/seo"
 import spellTracesExplanation from "../img/spellTraces/spellTracesExplanation.svg"
 import spellTracesCalculation from "../img/spellTraces/spellTracesCalculation.svg"
 
-const VERSION = "340"
+const VERSION = "341"
 const REGION = "KMS"
 const ascending = (firstItem, secondItem) => {
   return firstItem.name < secondItem.name

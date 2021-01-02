@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Row, Dropdown, Form, Figure, Button } from "react-bootstrap"
 
-const VERSION = "340"
+const VERSION = "341"
 const REGION = "KMS"
 
 const CoordinateParts = ({
