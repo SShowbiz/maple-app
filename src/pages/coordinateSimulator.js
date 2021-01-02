@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react"
 import axios from "axios"
-import { Row, Col, Container, Figure, Button } from "react-bootstrap"
+import { Row, Col, Container, Figure, Button, Form } from "react-bootstrap"
 import download from "downloadjs"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -63,6 +63,7 @@ const CoordinateSimulator = () => {
   const [hairMixValue, setHairMixValue] = useState(50)
   const [faceMixValue, setFaceMixValue] = useState(50)
 
+  const [action, setAction] = useState("stand1")
   const changeToList = useCallback((data, search) => {
     if (!data) return []
     if (search === "") {
@@ -229,10 +230,11 @@ const CoordinateSimulator = () => {
           weaponUri
       ) +
       "/" +
-      "stand1" +
+      action +
       "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
     )
   }, [
+    action,
     skinUri,
     hairBaseUri,
     faceBaseUri,
@@ -265,10 +267,11 @@ const CoordinateSimulator = () => {
           weaponUri
       ) +
       "/" +
-      "stand1" +
+      action +
       "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
     )
   }, [
+    action,
     skinUri,
     hairMixUri,
     faceBaseUri,
@@ -301,10 +304,11 @@ const CoordinateSimulator = () => {
           weaponUri
       ) +
       "/" +
-      "stand1" +
+      action +
       "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
     )
   }, [
+    action,
     skinUri,
     hairBaseUri,
     faceMixUri,
@@ -337,10 +341,11 @@ const CoordinateSimulator = () => {
           weaponUri
       ) +
       "/" +
-      "stand1" +
+      action +
       "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
     )
   }, [
+    action,
     skinUri,
     hairMixUri,
     faceMixUri,
@@ -791,6 +796,17 @@ const CoordinateSimulator = () => {
             <div>
               <Row className="justify-content-center">
                 <Figure.Image src={imageUri} />
+                <Form.Check
+                  type="checkbox"
+                  label="점프 모션"
+                  onChange={() => {
+                    if (action === "stand1") {
+                      setAction("jump")
+                    } else {
+                      setAction("stand1")
+                    }
+                  }}
+                />
               </Row>
               <Row className="justify-content-center">
                 <Button
