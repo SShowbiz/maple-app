@@ -13,6 +13,11 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import spellTracesExplanation from "../img/spellTraces/spellTracesExplanation.svg"
 import spellTracesCalculation from "../img/spellTraces/spellTracesCalculation.svg"
+import enforceNumber from "../img/spellTraces/enforceNumber.svg"
+import bossArmorStarforceEnforce from "../img/spellTraces/bossArmorStarforceEnforce.svg"
+import bossArmorStats from "../img/spellTraces/bossArmorStats.svg"
+import bossGloveStarforceEnforce from "../img/spellTraces/bossGloveStarforceEnforce.svg"
+import bossGloveStats from "../img/spellTraces/bossGloveStats.svg"
 
 const VERSION = "341"
 const REGION = "KMS"
@@ -41,6 +46,19 @@ const SpellTracesCalculator = () => {
   const [weaponSubStats, setWeaponSubStats] = useState(null)
   const [weaponResult, setWeaponResult] = useState("")
 
+  const [selectedArmorCategory, setSelectedArmorCategory] = useState(null)
+  const [selectedArmorJob, setSelectedArmorJob] = useState(null)
+  const [selectedArmorList, setSelectedArmorList] = useState(null)
+  const [selectedArmorListJob, setSelectedArmorListJob] = useState(null)
+  const [selectedArmor, setSelectedArmor] = useState(null)
+  const [armorSearch, setArmorSearch] = useState("")
+  const [armorStarforceNumber, setArmorStarforceNumber] = useState(null)
+  const [armorEnforceNumber, setArmorEnforceNumber] = useState(null)
+  const [armorFirstStats, setArmorFirstStats] = useState(null)
+  const [aromorSecondStats, setArmorSecondStats] = useState(null)
+  const [armorResult, setArmorResult] = useState("")
+  const [armorAttackPower, setArmorAttackPower] = useState(null)
+
   const jobMap = {
     Warrior: "전사",
     Magician: "마법사",
@@ -55,6 +73,7 @@ const SpellTracesCalculator = () => {
   const hpStr = ["HP", "STR"]
   const strDexLuk = ["STR", "DEX", "LUK"]
 
+  console.log(selectedArmorList)
   const weaponToStatMap = {
     "Shining Rod": intLuk,
     "Soul Shooter": dexStr,
@@ -88,6 +107,13 @@ const SpellTracesCalculator = () => {
     "Ancient Bow": strDex,
   }
 
+  const jobToStatMap = {
+    Warrior: strDex,
+    Bowman: dexStr,
+    Magician: intLuk,
+    Thief: lukDex,
+    Pirate: strDex,
+  }
   const objToList = obj => {
     return Object.keys(obj).map(selectedKey => obj[selectedKey])
   }
@@ -195,6 +221,13 @@ const SpellTracesCalculator = () => {
             style={styleObj}
             onClick={() => {
               setSelectedCategory("bossWeapon")
+              setSelectedWeapon(null)
+              setSelectedWeaponCategory(null)
+              setSelectedWeaponList(null)
+              setSelectedArmor(null)
+              setSelectedArmorCategory(null)
+              setSelectedArmorList(null)
+              setSelectedArmorJob(null)
             }}
           >
             {"보스 무기"}
@@ -203,8 +236,14 @@ const SpellTracesCalculator = () => {
             variant={selectedCategory === "bossArmor" ? "primary" : "dark"}
             style={styleObj}
             onClick={() => {
-              window.alert("추가 예정입니다!")
-              // setSelectedCategory("bossArmor")
+              setSelectedCategory("bossArmor")
+              setSelectedWeapon(null)
+              setSelectedWeaponCategory(null)
+              setSelectedWeaponList(null)
+              setSelectedArmor(null)
+              setSelectedArmorCategory(null)
+              setSelectedArmorList(null)
+              setSelectedArmorJob(null)
             }}
           >
             {"보스 방어구"}
@@ -214,6 +253,13 @@ const SpellTracesCalculator = () => {
             style={styleObj}
             onClick={() => {
               window.alert("추가 예정입니다!")
+              setSelectedWeapon(null)
+              setSelectedWeaponCategory(null)
+              setSelectedWeaponList(null)
+              setSelectedArmor(null)
+              setSelectedArmorCategory(null)
+              setSelectedArmorList(null)
+              setSelectedArmorJob(null)
               // setSelectedCategory("bossAccessory")
             }}
           >
@@ -459,15 +505,45 @@ const SpellTracesCalculator = () => {
                   selectedWeapon.typeInfo.subCategory !== "Whip Blade" && (
                     <div>
                       <Row>
-                        <Figure.Image
-                          style={{ "border-radius": "10px" }}
-                          src={spellTracesCalculation}
-                        />
+                        <Col
+                          style={{
+                            display: "flex",
+                            "align-items": "center",
+                            "justify-content": "center",
+                          }}
+                        >
+                          <Figure>
+                            <Figure.Image
+                              style={{
+                                "border-radius": "10px",
+                                width: "250px",
+                              }}
+                              src={enforceNumber}
+                            />
+                            <Figure.Caption style={{ "text-align": "center" }}>
+                              푸른색 상자 속 숫자: "작 된 횟수"
+                            </Figure.Caption>
+                          </Figure>
+                        </Col>
+                        <Col>
+                          <Figure>
+                            <Figure.Image
+                              style={{
+                                "border-radius": "10px",
+                                width: "200px",
+                              }}
+                              src={spellTracesCalculation}
+                            />
+                            <Figure.Caption style={{ "text-align": "center" }}>
+                              붉은색 상자 속 숫자: "증가 능력치"
+                            </Figure.Caption>
+                          </Figure>
+                        </Col>
                       </Row>
                       <br />
                       <Row>
-                        작된 횟수와 능력치를 위 그림의 빨간색 박스 내부처럼
-                        푸른색 글자 부분을 참고하여 아래의 항목들에 적어주세요.
+                        "작된 횟수"와 "증가한 능력치"를 위 그림의 푸른색 상자와
+                        붉은색 상자 내부의 수치를 참고하여 적어주세요.
                       </Row>
                       <br />
                       <Row>
@@ -574,6 +650,598 @@ const SpellTracesCalculator = () => {
             </Row>
           </div>
         )}
+        {selectedCategory === "bossArmor" && (
+          <div>
+            <Row>
+              <Button
+                variant={selectedArmorCategory === "Necro" ? "primary" : "dark"}
+                style={styleObj}
+                onClick={() => {
+                  setSelectedArmorCategory("Necro")
+                  setSelectedArmorList(
+                    necroSet.filter(
+                      item => !item.typeInfo.category.includes("Weapon")
+                    )
+                  )
+                  setSelectedArmor(null)
+                  setSelectedArmorJob(null)
+                  setSelectedArmorListJob(null)
+                }}
+              >
+                네크로 세트
+              </Button>
+              <Button
+                variant={
+                  selectedArmorCategory === "Von Leon" ? "primary" : "dark"
+                }
+                style={styleObj}
+                onClick={() => {
+                  setSelectedArmorCategory("Von Leon")
+                  setSelectedArmorList(
+                    vonLeonSet.filter(
+                      item => !item.typeInfo.category.includes("Weapon")
+                    )
+                  )
+                  setSelectedArmor(null)
+                  setSelectedArmorJob(null)
+                  setSelectedArmorListJob(null)
+                }}
+              >
+                반 레온 세트
+              </Button>
+              <Button
+                variant={
+                  selectedArmorCategory === "Signus" ? "primary" : "dark"
+                }
+                style={styleObj}
+                onClick={() => {
+                  setSelectedArmorCategory("Signus")
+                  setSelectedArmorList(
+                    signusSet.filter(
+                      item => !item.typeInfo.category.includes("Weapon")
+                    )
+                  )
+                  setSelectedArmor(null)
+                  setSelectedArmorJob(null)
+                  setSelectedArmorListJob(null)
+                }}
+              >
+                여제 세트
+              </Button>
+              <Button
+                variant={
+                  selectedArmorCategory === "Root Abyss" ? "primary" : "dark"
+                }
+                style={styleObj}
+                onClick={() => {
+                  setSelectedArmorCategory("Root Abyss")
+                  setSelectedArmorList(
+                    rootAbyssSet.filter(
+                      item => !item.typeInfo.category.includes("Weapon")
+                    )
+                  )
+                  setSelectedArmor(null)
+                  setSelectedArmorJob(null)
+                  setSelectedArmorListJob(null)
+                }}
+              >
+                루타비스 세트
+              </Button>
+              <Button
+                variant={
+                  selectedArmorCategory === "Absolabs" ? "primary" : "dark"
+                }
+                style={styleObj}
+                onClick={() => {
+                  setSelectedArmorCategory("Absolabs")
+                  setSelectedArmorList(
+                    absolabsSet.filter(
+                      item => !item.typeInfo.category.includes("Weapon")
+                    )
+                  )
+                  setSelectedArmor(null)
+                  setSelectedArmorJob(null)
+                  setSelectedArmorListJob(null)
+                }}
+              >
+                앱솔랩스 세트
+              </Button>
+              <Button
+                variant={
+                  selectedArmorCategory === "Arcaneshade" ? "primary" : "dark"
+                }
+                style={styleObj}
+                onClick={() => {
+                  setSelectedArmorCategory("Arcaneshade")
+                  setSelectedArmorList(
+                    arcaneshadeSet.filter(
+                      item => !item.typeInfo.category.includes("Weapon")
+                    )
+                  )
+                  setSelectedArmor(null)
+                  setSelectedArmorJob(null)
+                  setSelectedArmorListJob(null)
+                }}
+              >
+                아케인셰이드 세트
+              </Button>
+            </Row>
+            {selectedArmorList && (
+              <Row>
+                <Button
+                  variant={selectedArmorJob === "Warrior" ? "primary" : "dark"}
+                  style={styleObj}
+                  onClick={() => {
+                    setSelectedArmorListJob(
+                      selectedArmorList.filter(item =>
+                        item.requiredJobs.includes("Warrior")
+                      )
+                    )
+                    setSelectedArmorJob("Warrior")
+                    setSelectedArmor(null)
+                  }}
+                >
+                  전사
+                </Button>
+                <Button
+                  variant={selectedArmorJob === "Bowman" ? "primary" : "dark"}
+                  style={styleObj}
+                  onClick={() => {
+                    setSelectedArmorListJob(
+                      selectedArmorList.filter(item =>
+                        item.requiredJobs.includes("Bowman")
+                      )
+                    )
+                    setSelectedArmorJob("Bowman")
+                    setSelectedArmor(null)
+                  }}
+                >
+                  궁수
+                </Button>
+                <Button
+                  variant={selectedArmorJob === "Magician" ? "primary" : "dark"}
+                  style={styleObj}
+                  onClick={() => {
+                    setSelectedArmorListJob(
+                      selectedArmorList.filter(item =>
+                        item.requiredJobs.includes("Magician")
+                      )
+                    )
+                    setSelectedArmorJob("Magician")
+                    setSelectedArmor(null)
+                  }}
+                >
+                  마법사
+                </Button>
+                <Button
+                  variant={selectedArmorJob === "Thief" ? "primary" : "dark"}
+                  style={styleObj}
+                  onClick={() => {
+                    setSelectedArmorListJob(
+                      selectedArmorList.filter(item =>
+                        item.requiredJobs.includes("Thief")
+                      )
+                    )
+                    setSelectedArmorJob("Thief")
+                    setSelectedArmor(null)
+                  }}
+                >
+                  도적
+                </Button>
+                <Button
+                  variant={selectedArmorJob === "Pirate" ? "primary" : "dark"}
+                  style={styleObj}
+                  onClick={() => {
+                    setSelectedArmorListJob(
+                      selectedArmorList.filter(item =>
+                        item.requiredJobs.includes("Pirate")
+                      )
+                    )
+                    setSelectedArmorJob("Pirate")
+                    setSelectedArmor(null)
+                  }}
+                >
+                  해적
+                </Button>
+              </Row>
+            )}
+            &nbsp;
+            <Row>
+              <Form.Control
+                placeholder={`방어구 검색 키워드`}
+                style={{ width: "180px" }}
+                value={armorSearch}
+                onChange={e => {
+                  setArmorSearch(e.target.value)
+                }}
+              />
+              <Dropdown
+                onSelect={eventKey => {
+                  setArmorSearch("")
+                  setSelectedArmor(
+                    selectedArmorList.find(
+                      ({ id }) => id.toString() === eventKey
+                    )
+                  )
+                  setArmorStarforceNumber(0)
+                  setArmorEnforceNumber(1)
+                  setArmorFirstStats(0)
+                  setArmorSecondStats(0)
+                }}
+              >
+                <Dropdown.Toggle
+                  variant="dark"
+                  id="dropdown-basic"
+                  style={{ width: "150px" }}
+                >
+                  방어구 목록
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="context">
+                  {selectedArmorListJob
+                    ?.filter(item => item?.name?.includes(armorSearch))
+                    ?.map(parts => (
+                      <Dropdown.Item
+                        style={{ width: "270px" }}
+                        eventKey={parts.id}
+                        event={parts}
+                      >
+                        <Figure.Image
+                          width={20}
+                          height={10}
+                          src={`https://maplestory.io/api/${REGION}/${VERSION}/item/${parts.id}/icon`}
+                        />
+                        &nbsp; &nbsp;
+                        {parts.name}
+                      </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Row>
+            {!selectedArmor && (
+              <Row>
+                &nbsp;
+                <div>
+                  <p style={{ color: "red" }}>
+                    주흔 작 상태를 확인할 방어구를 선택해주세요.
+                  </p>
+                </div>
+              </Row>
+            )}
+            <Row>
+              <Col
+                style={{
+                  display: "flex",
+                  "align-items": "center",
+                  "max-width": "50%",
+                  "justify-content": "center",
+                }}
+              >
+                <div>
+                  {selectedArmor && (
+                    <div style={{ "text-align": "center" }}>
+                      <Row className="justify-content-center">
+                        <div
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            "line-height": "50px",
+                            border: "2px solid black",
+                            padding: "10px",
+                            "border-radius": "6px",
+                            display: "flex",
+                            "justify-content": "center",
+                            "align-items": "center",
+                          }}
+                        >
+                          <Figure.Image
+                            style={{
+                              margin: 0,
+                              "max-width": "100%",
+                              "max-height": "100%",
+                            }}
+                            margin={0}
+                            width={70}
+                            src={`https://maplestory.io/api/${REGION}/${VERSION}/item/${selectedArmor?.id}/icon`}
+                          />
+                        </div>
+                      </Row>
+                      &nbsp;
+                      <Row className="justify-content-center">
+                        선택된 방어구: {selectedArmor.name}
+                        <br /> 착용 레벨: {selectedArmor.requiredLevel}
+                        <br /> 착용 가능 직업:{" "}
+                        {selectedArmor.requiredJobs
+                          .map(job => jobMap[job])
+                          .join(", ")}
+                      </Row>
+                    </div>
+                  )}
+                </div>
+              </Col>
+              <Col className="col-lg-6">
+                <Row>&nbsp;</Row>
+                {selectedArmor && (
+                  <div>
+                    <Row>
+                      <Col
+                        style={{
+                          display: "flex",
+                          "align-items": "center",
+                          "justify-content": "center",
+                        }}
+                      >
+                        <Figure>
+                          <Figure.Image
+                            style={{
+                              "border-radius": "10px",
+                              width: "250px",
+                            }}
+                            src={
+                              selectedArmor?.typeInfo.subCategory === "Glove"
+                                ? bossGloveStarforceEnforce
+                                : bossArmorStarforceEnforce
+                            }
+                          />
+                          <Figure.Caption style={{ "text-align": "center" }}>
+                            {selectedArmor?.typeInfo.subCategory === "Glove" &&
+                              '푸른색 상자 속 별 수: "스타포스"'}
+                            <br />
+                            푸른색 상자 속 숫자: "작 된 횟수"
+                          </Figure.Caption>
+                        </Figure>
+                      </Col>
+                      <Col>
+                        <Figure>
+                          <Figure.Image
+                            style={{
+                              "border-radius": "10px",
+                              width: "200px",
+                            }}
+                            src={
+                              selectedArmor?.typeInfo.subCategory === "Glove"
+                                ? bossGloveStats
+                                : bossArmorStats
+                            }
+                          />
+                          <Figure.Caption style={{ "text-align": "center" }}>
+                            붉은색 상자 속 숫자: "증가 능력치"
+                          </Figure.Caption>
+                        </Figure>
+                      </Col>
+                    </Row>
+                    <br />
+                    <Row>
+                      "작된 횟수"와 "증가한 능력치"를 위 그림의 푸른색 상자와
+                      붉은색 상자 내부의 수치를 참고하여 적어주세요.
+                    </Row>
+                    <br />
+                    {selectedArmor?.typeInfo.subCategory === "Glove" && (
+                      <div>
+                        <Row>
+                          <Form.Control
+                            plaintext
+                            style={{ width: "70px" }}
+                            value="스타포스"
+                          />
+                          <Form.Control
+                            type="number"
+                            min={0}
+                            placeholder={`스타포스 별 개수`}
+                            style={{ width: "180px", "margin-bottom": "2px" }}
+                            value={armorStarforceNumber}
+                            onChange={e => {
+                              setArmorStarforceNumber(e.target.value)
+                            }}
+                          />
+                        </Row>
+                      </div>
+                    )}
+                    <Row>
+                      <Form.Control
+                        plaintext
+                        style={{ width: "70px" }}
+                        value="작 횟수"
+                      />
+                      <Form.Control
+                        type="number"
+                        min={1}
+                        placeholder={`주문서 작 횟수`}
+                        style={{ width: "180px", "margin-bottom": "2px" }}
+                        value={armorEnforceNumber}
+                        onChange={e => {
+                          setArmorEnforceNumber(e.target.value)
+                        }}
+                      />
+                    </Row>
+                    {selectedArmor?.typeInfo.subCategory === "Glove" && (
+                      <Row>
+                        <Form.Control
+                          plaintext
+                          style={{ width: "70px" }}
+                          value={
+                            selectedArmor.requiredJobs[0] === "Magician"
+                              ? "마력"
+                              : "공격력"
+                          }
+                        />
+                        <Form.Control
+                          type="number"
+                          min={0}
+                          placeholder={`${
+                            selectedArmor.requiredJobs[0] === "Magician"
+                              ? "마력"
+                              : "공격력"
+                          } 증가 수치`}
+                          style={{ width: "180px", "margin-bottom": "2px" }}
+                          value={armorAttackPower}
+                          onChange={e => {
+                            setArmorAttackPower(e.target.value)
+                          }}
+                        />
+                      </Row>
+                    )}
+                    {selectedArmor?.typeInfo.subCategory !== "Glove" &&
+                      jobToStatMap[selectedArmor.requiredJobs[0]].map(
+                        (stat, index) => (
+                          <div>
+                            <Row>
+                              <Form.Control
+                                plaintext
+                                style={{ width: "70px" }}
+                                value={stat}
+                              />
+                              <Form.Control
+                                type="number"
+                                min={0}
+                                placeholder={`증가한 ${stat} 수치`}
+                                style={{
+                                  width: "180px",
+                                  "margin-bottom": "2px",
+                                }}
+                                value={
+                                  index === 0 ? weaponMainStats : weaponSubStats
+                                }
+                                onChange={e => {
+                                  if (index === 0) {
+                                    setArmorFirstStats(e.target.value)
+                                  } else {
+                                    setArmorSecondStats(e.target.value)
+                                  }
+                                }}
+                              />
+                            </Row>
+                          </div>
+                        )
+                      )}
+                    <br />
+                    <Row>
+                      <Button
+                        variant="dark"
+                        style={styleObj}
+                        onClick={() => {
+                          if (selectedArmor?.typeInfo.subCategory === "Glove") {
+                            const additionalAttackPower = {
+                              0: 0,
+                              1: 0,
+                              2: 0,
+                              3: 0,
+                              4: 0,
+                              5: 1,
+                              6: 1,
+                              7: 2,
+                              8: 2,
+                              9: 3,
+                              10: 3,
+                              11: 4,
+                              12: 4,
+                              13: 5,
+                              14: 6,
+                              15: 7,
+                              16: 17,
+                              17: 28,
+                              18: 40,
+                              19: 53,
+                              20: 67,
+                              21: 82,
+                              22: 99,
+                              23: 120,
+                            }
+                            const attackPowerBySpellTraces =
+                              armorAttackPower -
+                              additionalAttackPower[armorStarforceNumber]
+                            const x = parseInt(
+                              attackPowerBySpellTraces / armorEnforceNumber
+                            )
+                            const y =
+                              attackPowerBySpellTraces % armorEnforceNumber
+                            const z = [100, 70, 30]
+                            if (
+                              weaponEnforceNumber < 0 ||
+                              (x === 4 && y !== 0) ||
+                              x < 1 ||
+                              x > 3 ||
+                              (x > 0 &&
+                                x < 3 &&
+                                (y < 0 || y > armorEnforceNumber - 1))
+                            ) {
+                              setArmorResult(
+                                `잘못된 입력입니다! 주문의 흔적을 사용한 강화가 아닐 수 있습니다.`
+                              )
+                            } else if (y === 0) {
+                              setArmorResult(
+                                `${z[x - 1]}% 주문서 ${armorEnforceNumber}장`
+                              )
+                            } else {
+                              setArmorResult(
+                                `${z[x - 1]}% 주문서 ${armorEnforceNumber -
+                                  y}장, ${z[x]}% 주문서 ${y}장`
+                              )
+                            }
+                          } else {
+                            const mainStats = Math.max(
+                              armorFirstStats,
+                              aromorSecondStats
+                            )
+                            const subStats = Math.min(
+                              armorFirstStats,
+                              aromorSecondStats
+                            )
+                            let x = 0
+                            let y = 0
+                            let z = 0
+                            while (z <= armorEnforceNumber) {
+                              y =
+                                mainStats -
+                                subStats -
+                                3 * armorEnforceNumber -
+                                4 * z
+                              x =
+                                4 * armorEnforceNumber -
+                                (mainStats - subStats) +
+                                3 * z
+                              if (x >= 0 && x <= 8 && y >= 0 && y <= 8) {
+                                break
+                              }
+                              z += 1
+                            }
+                            if (z !== armorEnforceNumber * 1 + 1) {
+                              const result = [
+                                { species: 100, number: x },
+                                { species: 70, number: y },
+                                { species: 30, number: z },
+                              ]
+                                .filter(({ number }) => number !== 0)
+                                .map(
+                                  ({ species, number }) =>
+                                    `${species}% 주문서 ${number} 장`
+                                )
+                                .join(", ")
+                              setArmorResult(result)
+                            } else {
+                              console.log("???")
+                              setArmorResult(
+                                `잘못된 입력입니다! 주문의 흔적을 사용한 강화가 아닐 수 있습니다.`
+                              )
+                            }
+                          }
+                        }}
+                      >
+                        작 상태 계산하기
+                      </Button>
+                      {armorResult && (
+                        <Form.Control
+                          plaintext
+                          style={{ width: "450px", color: "red" }}
+                          value={`${armorResult}`}
+                        />
+                      )}
+                    </Row>
+                  </div>
+                )}
+              </Col>
+            </Row>
+          </div>
+        )}
         {!selectedCategory && (
           <div>
             <Row>&nbsp;</Row>
@@ -627,6 +1295,14 @@ const SpellTracesCalculator = () => {
               <p>
                 ex) 앱솔랩스 스펠링스태프 &rarr; 보스 무기, 이글아이 던위치로브
                 &rarr; 보스 방어구, 매커네이터 펜던트 &rarr; 보스 장신구
+              </p>
+              <p style={{ color: "red" }}>
+                주의) 현재 제논, 데몬어벤져는 지원하지 않습니다. 추후 추가
+                예정입니다.
+              </p>
+              <p style={{ color: "red" }}>
+                주의) 현재 주스탯 작이 아닌 무기 작은 지원하지 않습니다. (ex.
+                단검에 공격력(힘)작을 진행한 경우)
               </p>
             </Row>
           </div>
