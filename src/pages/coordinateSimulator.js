@@ -64,25 +64,20 @@ const CoordinateSimulator = () => {
   const [faceMixValue, setFaceMixValue] = useState(50)
 
   const [action, setAction] = useState("stand1")
+
   const changeToList = useCallback((data, search) => {
     if (!data) return []
     if (search === "") {
-      return Object.keys(data).map(selectedKey => ({
-        id: data[selectedKey],
-        name: selectedKey,
-      }))
+      return Object.keys(data).map(selectedKey => data[selectedKey])
     }
     return Object.keys(data)
       .filter(key => key?.includes(search))
-      .map(selectedKey => ({
-        id: data[selectedKey],
-        name: selectedKey,
-      }))
+      .map(selectedKey => data[selectedKey])
   }, [])
 
   const changeToSearchList = useCallback((data, searchWord) => {
     if (searchWord === "") return data
-    return data ? data.filter(({ name }) => name.includes(searchWord)) : []
+    return data ? data.filter(({ name }) => name?.includes(searchWord)) : []
   }, [])
 
   const hairList = useMemo(() => {
@@ -385,46 +380,46 @@ const CoordinateSimulator = () => {
         item.name.includes("검은색") &&
         !hairObj[item.name.replace("검은색", "")]
       ) {
-        hairObj[item.name.replace("검은색", "")] = item.id
+        hairObj[item.name.replace("검은색", "")] = item
       }
       if (item.typeInfo.subCategory === "Face" && !faceObj[item.name]) {
-        faceObj[item.name] = item.id
+        faceObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Head" && !skinObj[item.name]) {
-        skinObj[item.name] = item.id
+        skinObj[item.name] = item
       }
       if (
         item.typeInfo.subCategory === "Face Accessory" &&
         !faceAccessoryObj[item.name]
       ) {
-        faceAccessoryObj[item.name] = item.id
+        faceAccessoryObj[item.name] = item
       }
       if (
         item.typeInfo.subCategory === "Eye Decoration" &&
         !eyeDecorationObj[item.name]
       ) {
-        eyeDecorationObj[item.name] = item.id
+        eyeDecorationObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Hat" && !hatObj[item.name]) {
-        hatObj[item.name] = item.id
+        hatObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Overall" && !overallObj[item.name]) {
-        overallObj[item.name] = item.id
+        overallObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Top" && !topObj[item.name]) {
-        topObj[item.name] = item.id
+        topObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Bottom" && !bottomObj[item.name]) {
-        bottomObj[item.name] = item.id
+        bottomObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Shoes" && !shoesObj[item.name]) {
-        shoesObj[item.name] = item.id
+        shoesObj[item.name] = item
       }
       if (item.typeInfo.subCategory === "Cape" && !capeObj[item.name]) {
-        capeObj[item.name] = item.id
+        capeObj[item.name] = item
       }
       if (item.typeInfo.category.includes("Weapon") && !weaponObj[item.name]) {
-        weaponObj[item.name] = item.id
+        weaponObj[item.name] = item
       }
     })
     setHairData(changeToList(hairObj, ""))
@@ -779,7 +774,19 @@ const CoordinateSimulator = () => {
               searchKeyWord={weaponSearch}
               setSearchWord={setWeaponSearch}
               selectedParts={selectedWeapon}
-              setSelectedParts={setSelectedWeapon}
+              setSelectedParts={weapon => {
+                if (action !== "jump") {
+                  if (
+                    weapon?.typeInfo.subCategory === "Pole Arm" ||
+                    weapon?.typeInfo.subCategory === "Spear"
+                  ) {
+                    setAction("stand2")
+                  } else {
+                    setAction("stand1")
+                  }
+                }
+                setSelectedWeapon(weapon)
+              }}
               partsData={weaponData}
               partsList={weaponList}
             />
@@ -800,8 +807,13 @@ const CoordinateSimulator = () => {
                   type="checkbox"
                   label="점프 모션"
                   onChange={() => {
-                    if (action === "stand1") {
+                    if (action !== "jump") {
                       setAction("jump")
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
                     } else {
                       setAction("stand1")
                     }
