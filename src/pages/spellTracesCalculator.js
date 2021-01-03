@@ -1011,6 +1011,8 @@ const SpellTracesCalculator = () => {
                     </Row>
                     <br />
                     <Row>
+                      {selectedArmor?.typeInfo.subCategory === "Glove" &&
+                        '"스타포스 별 수"와 '}
                       "작된 횟수"와 "증가한 능력치"를 위 그림의 푸른색 상자와
                       붉은색 상자 내부의 수치를 참고하여 적어주세요.
                     </Row>
