@@ -992,6 +992,17 @@ const CoordinateSimulator = () => {
                 />
               </Row>
               <Row className="justify-content-center">
+                <p
+                  style={{
+                    color: "red",
+                    "font-size": "5px",
+                    "text-align": "center",
+                  }}
+                >
+                  주의) 되도록이면 코디 완성 후 애니메이션 적용해주세요!
+                </p>
+              </Row>
+              <Row className="justify-content-center">
                 <Button
                   variant="primary"
                   onClick={() => forceDownload(imageUri)}
