@@ -910,7 +910,7 @@ const CoordinateSimulator = () => {
                     >
                       <SuspenseImg
                         src={imageHairBaseFaceBaseUri}
-                        opacity={visualizationMode}
+                        style={{ width: 170 }}
                       />
                       {(visualizationMode === 1 || visualizationMode === 5) && (
                         <SuspenseImg
@@ -923,6 +923,7 @@ const CoordinateSimulator = () => {
                                 : 1 -
                                   (100 - faceMixValue * 1) /
                                     (100 - hairMixValue * 1),
+                            width: 170,
                           }}
                         />
                       )}
@@ -937,6 +938,7 @@ const CoordinateSimulator = () => {
                                 : 1 -
                                   (100 - hairMixValue * 1) /
                                     (100 - faceMixValue * 1),
+                            width: 170,
                           }}
                         />
                       )}
@@ -951,6 +953,7 @@ const CoordinateSimulator = () => {
                               visualizationMode === 5
                                 ? (hairMixValue * 1) / 100
                                 : (faceMixValue * 1) / 100,
+                            width: 170,
                           }}
                         />
                       )}
@@ -979,7 +982,7 @@ const CoordinateSimulator = () => {
               <Row className="justify-content-center">
                 <Form.Check
                   type="checkbox"
-                  label="애니메이션 - 서 있기"
+                  label="애니메이션: 서 있기"
                   checked={isAnimated}
                   onChange={() => {
                     if (isAnimated) {
