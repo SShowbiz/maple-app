@@ -1,17 +1,59 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react"
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  Suspense,
+} from "react"
 import axios from "axios"
-import { Row, Col, Container, Figure, Button, Form } from "react-bootstrap"
+import {
+  Row,
+  Col,
+  Container,
+  Figure,
+  Button,
+  Form,
+  Spinner,
+} from "react-bootstrap"
 import download from "downloadjs"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import CoordinateParts from "../components/coordinateParts"
 import ColorSelect from "../components/colorSelect"
 import MixRatio from "../components/mixRatio"
+import LoadingOverlay from "react-loading-overlay"
 
-const VERSION = "341"
+const VERSION = "342"
 const REGION = "KMS"
 
 const CoordinateSimulator = () => {
+  const SuspenseImg = ({ src, ...rest }) => {
+    imgCache.read(src)
+    return <img src={src} {...rest} />
+  }
+
+  const imgCache = {
+    __cache: {},
+    read(src) {
+      if (!this.__cache[src]) {
+        this.__cache[src] = new Promise(resolve => {
+          const img = new Image()
+          img.onload = () => {
+            this.__cache[src] = true
+            resolve(this.__cache[src])
+          }
+          img.src = src
+        }).then(img => {
+          this.__cache[src] = true
+        })
+      }
+      if (this.__cache[src] instanceof Promise) {
+        throw this.__cache[src]
+      }
+      return this.__cache[src]
+    },
+  }
+
   const [hairData, setHairData] = useState(null)
   const [faceData, setFaceData] = useState(null)
   const [skinData, setSkinData] = useState(null)
@@ -64,6 +106,7 @@ const CoordinateSimulator = () => {
   const [faceMixValue, setFaceMixValue] = useState(50)
 
   const [action, setAction] = useState("stand1")
+  const [isAnimated, setIsAnimated] = useState(false)
 
   const changeToList = useCallback((data, search) => {
     if (!data) return []
@@ -226,7 +269,9 @@ const CoordinateSimulator = () => {
       ) +
       "/" +
       action +
-      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+      `/${
+        isAnimated ? "animated?" : "0"
+      }?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0`
     )
   }, [
     action,
@@ -242,6 +287,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    isAnimated,
   ])
 
   const imageHairMixFaceBaseUri = useMemo(() => {
@@ -263,7 +309,9 @@ const CoordinateSimulator = () => {
       ) +
       "/" +
       action +
-      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+      `/${
+        isAnimated ? "animated?" : "0"
+      }?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0`
     )
   }, [
     action,
@@ -279,6 +327,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    isAnimated,
   ])
 
   const imageHairBaseFaceMixUri = useMemo(() => {
@@ -300,7 +349,9 @@ const CoordinateSimulator = () => {
       ) +
       "/" +
       action +
-      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+      `/${
+        isAnimated ? "animated?" : "0"
+      }?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0`
     )
   }, [
     action,
@@ -316,6 +367,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    isAnimated,
   ])
 
   const imageHairMixFaceMixUri = useMemo(() => {
@@ -337,7 +389,9 @@ const CoordinateSimulator = () => {
       ) +
       "/" +
       action +
-      "/0?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0"
+      `/${
+        isAnimated ? "animated?" : "0"
+      }?showears=false&showLefEars=false&showHighLefEars=undefined&resize=2&name=&flipX=false&bgColor=0,0,0,0`
     )
   }, [
     action,
@@ -353,13 +407,14 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    isAnimated,
   ])
 
   const [imageUri, setImageUri] = useState(imageHairBaseFaceBaseUri)
 
   const fetchData = useCallback(async () => {
     const { data } = await axios.get(
-      "https://maplestory.io/api/KMS/340/item/category/equip"
+      `https://maplestory.io/api/${REGION}/${VERSION}/item/category/equip`
     )
     const hairObj = {}
     const faceObj = {}
@@ -373,7 +428,6 @@ const CoordinateSimulator = () => {
     const shoesObj = {}
     const capeObj = {}
     const weaponObj = {}
-
     data.forEach(item => {
       if (
         item.typeInfo.subCategory === "Hair" &&
@@ -549,6 +603,25 @@ const CoordinateSimulator = () => {
     [defaultOptions]
   )
 
+  const visualizationMode = useMemo(() => {
+    const hairMixVal = hairMixValue * 1
+    const faceMixVal = faceMixValue * 1
+    if (hairMixVal < 1 && faceMixVal > 0) {
+      return 1
+    } else if (hairMixVal > 0 && faceMixVal < 1) {
+      return 2
+    } else if (hairMixVal > 0 && faceMixVal > 0) {
+      if (hairMixVal === faceMixVal) {
+        return 3
+      } else if (hairMixVal > faceMixVal) {
+        return 4
+      } else {
+        return 5
+      }
+    }
+    return 6
+  }, [hairMixValue, faceMixValue])
+
   useEffect(() => {
     let imageList = [{ src: imageHairBaseFaceBaseUri }]
     const hairMixVal = hairMixValue * 1
@@ -601,7 +674,27 @@ const CoordinateSimulator = () => {
     faceMixValue,
     mergeImages,
   ])
-
+  useEffect(() => {
+    setIsAnimated(false)
+  }, [
+    selectedSkin,
+    selectedHair,
+    selectedFace,
+    selectedFaceAccessory,
+    selectedHat,
+    selectedOverall,
+    selectedTop,
+    selectedBottom,
+    selectedShoes,
+    selectedCape,
+    selectedWeapon,
+    hairMixValue,
+    faceMixValue,
+    hairBaseColor,
+    hairMixColor,
+    faceBaseColor,
+    faceMixColor,
+  ])
   return (
     <Layout pageInfo={{ pageName: "coordinateSimulator" }}>
       <SEO title="Coordinate Simulator" />
@@ -802,7 +895,71 @@ const CoordinateSimulator = () => {
           >
             <div>
               <Row className="justify-content-center">
-                <Figure.Image src={imageUri} />
+                {!isAnimated && <Figure.Image src={imageUri} />}
+                {isAnimated && (
+                  <Row>
+                    <Suspense
+                      fallback={
+                        <Spinner
+                          animation="border"
+                          style={{ "margin-bottom": "70px" }}
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </Spinner>
+                      }
+                      style={{ position: "relative" }}
+                    >
+                      <SuspenseImg
+                        src={imageHairBaseFaceBaseUri}
+                        opacity={visualizationMode}
+                      />
+                      {(visualizationMode === 1 || visualizationMode === 5) && (
+                        <SuspenseImg
+                          src={imageHairBaseFaceMixUri}
+                          style={{
+                            position: "absolute",
+                            opacity:
+                              visualizationMode === 1
+                                ? (faceMixValue * 1) / 100
+                                : 1 -
+                                  (100 - faceMixValue * 1) /
+                                    (100 - hairMixValue * 1),
+                          }}
+                        />
+                      )}
+                      {(visualizationMode === 2 || visualizationMode === 4) && (
+                        <SuspenseImg
+                          src={imageHairMixFaceBaseUri}
+                          style={{
+                            position: "absolute",
+                            opacity:
+                              visualizationMode === 2
+                                ? (hairMixValue * 1) / 100
+                                : 1 -
+                                  (100 - hairMixValue * 1) /
+                                    (100 - faceMixValue * 1),
+                          }}
+                        />
+                      )}
+                      {(visualizationMode === 3 ||
+                        visualizationMode === 4 ||
+                        visualizationMode === 5) && (
+                        <SuspenseImg
+                          src={imageHairMixFaceMixUri}
+                          style={{
+                            position: "absolute",
+                            opacity:
+                              visualizationMode === 5
+                                ? (hairMixValue * 1) / 100
+                                : (faceMixValue * 1) / 100,
+                          }}
+                        />
+                      )}
+                    </Suspense>
+                  </Row>
+                )}
+              </Row>
+              <Row className="justify-content-center">
                 <Form.Check
                   type="checkbox"
                   label="점프 모션"
@@ -816,6 +973,20 @@ const CoordinateSimulator = () => {
                       setAction("stand2")
                     } else {
                       setAction("stand1")
+                    }
+                  }}
+                />
+              </Row>
+              <Row className="justify-content-center">
+                <Form.Check
+                  type="checkbox"
+                  label="애니메이션 - 서 있기"
+                  checked={isAnimated}
+                  onChange={() => {
+                    if (isAnimated) {
+                      setIsAnimated(false)
+                    } else {
+                      setIsAnimated(true)
                     }
                   }}
                 />

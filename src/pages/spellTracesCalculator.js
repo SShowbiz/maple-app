@@ -19,7 +19,7 @@ import bossArmorStats from "../img/spellTraces/bossArmorStats.svg"
 import bossGloveStarforceEnforce from "../img/spellTraces/bossGloveStarforceEnforce.svg"
 import bossGloveStats from "../img/spellTraces/bossGloveStats.svg"
 
-const VERSION = "341"
+const VERSION = "342"
 const REGION = "KMS"
 const ascending = (firstItem, secondItem) => {
   return firstItem.name < secondItem.name
@@ -73,7 +73,6 @@ const SpellTracesCalculator = () => {
   const hpStr = ["HP", "STR"]
   const strDexLuk = ["STR", "DEX", "LUK"]
 
-  console.log(selectedArmorList)
   const weaponToStatMap = {
     "Shining Rod": intLuk,
     "Soul Shooter": dexStr,
@@ -119,7 +118,7 @@ const SpellTracesCalculator = () => {
   }
   const fetchData = useCallback(async () => {
     const { data } = await axios.get(
-      "https://maplestory.io/api/KMS/340/item/category/equip"
+      `https://maplestory.io/api/${REGION}/${VERSION}/item/category/equip`
     )
     const necroObj = {}
     const vonLeonObj = {}
@@ -185,7 +184,6 @@ const SpellTracesCalculator = () => {
   }, [])
 
   useEffect(() => {
-    console.log("hello guys")
     fetchData()
   }, [fetchData])
 
@@ -1220,7 +1218,6 @@ const SpellTracesCalculator = () => {
                                 .join(", ")
                               setArmorResult(result)
                             } else {
-                              console.log("???")
                               setArmorResult(
                                 `잘못된 입력입니다! 주문의 흔적을 사용한 강화가 아닐 수 있습니다.`
                               )
