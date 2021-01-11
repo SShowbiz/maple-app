@@ -910,7 +910,7 @@ const CoordinateSimulator = () => {
                     >
                       <SuspenseImg
                         src={imageHairBaseFaceBaseUri}
-                        style={{ width: 170 }}
+                        style={{ "max-width": "170px" }}
                       />
                       {(visualizationMode === 1 || visualizationMode === 5) && (
                         <SuspenseImg
@@ -923,7 +923,7 @@ const CoordinateSimulator = () => {
                                 : 1 -
                                   (100 - faceMixValue * 1) /
                                     (100 - hairMixValue * 1),
-                            width: 170,
+                            "max-width": "170px",
                           }}
                         />
                       )}
@@ -938,7 +938,7 @@ const CoordinateSimulator = () => {
                                 : 1 -
                                   (100 - hairMixValue * 1) /
                                     (100 - faceMixValue * 1),
-                            width: 170,
+                            "max-width": "170px",
                           }}
                         />
                       )}
@@ -953,7 +953,7 @@ const CoordinateSimulator = () => {
                               visualizationMode === 5
                                 ? (hairMixValue * 1) / 100
                                 : (faceMixValue * 1) / 100,
-                            width: 170,
+                            "max-width": "170px",
                           }}
                         />
                       )}
@@ -964,7 +964,7 @@ const CoordinateSimulator = () => {
               <Row className="justify-content-center">
                 <Form.Check
                   type="checkbox"
-                  label="점프 모션"
+                  label="모션: 점프"
                   onChange={() => {
                     if (action !== "jump") {
                       setAction("jump")
@@ -982,7 +982,7 @@ const CoordinateSimulator = () => {
               <Row className="justify-content-center">
                 <Form.Check
                   type="checkbox"
-                  label="애니메이션: 서 있기"
+                  label="모션: 서 있기"
                   checked={isAnimated}
                   onChange={() => {
                     if (isAnimated) {
@@ -1001,7 +1001,7 @@ const CoordinateSimulator = () => {
                     "text-align": "center",
                   }}
                 >
-                  주의) 되도록이면 코디 완성 후 애니메이션 적용해주세요!
+                  주의) 되도록이면 코디 완성 후 모션 적용해주세요!
                 </p>
               </Row>
               <Row className="justify-content-center">
