@@ -21,7 +21,6 @@ import SEO from "../components/seo"
 import CoordinateParts from "../components/coordinateParts"
 import ColorSelect from "../components/colorSelect"
 import MixRatio from "../components/mixRatio"
-import LoadingOverlay from "react-loading-overlay"
 
 const VERSION = "342"
 const REGION = "KMS"
@@ -29,7 +28,7 @@ const REGION = "KMS"
 const CoordinateSimulator = () => {
   const SuspenseImg = ({ src, ...rest }) => {
     imgCache.read(src)
-    return <img src={src} {...rest} />
+    return <img src={src} {...rest} alt={<div></div>} />
   }
 
   const imgCache = {
