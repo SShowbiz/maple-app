@@ -1033,6 +1033,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 점프"
+                  style={{ "font-size": "14px" }}
                   checked={action === "jump" && isAnimated}
                   onChange={() => {
                     if (!(action === "jump" && isAnimated)) {
@@ -1055,6 +1056,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 서 있기(한손)"
+                  style={{ "font-size": "14px" }}
                   checked={action === "stand1" && isAnimated}
                   onChange={() => {
                     if (!(action === "stand1" && isAnimated)) {
@@ -1077,6 +1079,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 서 있기(두손)"
+                  style={{ "font-size": "14px" }}
                   checked={action === "stand2" && isAnimated}
                   onChange={() => {
                     if (!(action === "stand2" && isAnimated)) {
@@ -1099,6 +1102,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 걷기(한손)"
+                  style={{ "font-size": "14px" }}
                   checked={action === "walk1" && isAnimated}
                   onChange={() => {
                     if (!(action === "walk1" && isAnimated)) {
@@ -1122,6 +1126,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 걷기(두손)"
+                  style={{ "font-size": "14px" }}
                   checked={action === "walk2" && isAnimated}
                   onChange={() => {
                     if (!(action === "walk2" && isAnimated)) {
@@ -1145,6 +1150,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 로프 타기"
+                  style={{ "font-size": "14px" }}
                   checked={action === "rope" && isAnimated}
                   onChange={() => {
                     if (!(action === "rope" && isAnimated)) {
@@ -1167,6 +1173,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 활 쏘기"
+                  style={{ "font-size": "14px" }}
                   checked={action === "shoot1" && isAnimated}
                   onChange={() => {
                     if (!(action === "shoot1" && isAnimated)) {
@@ -1189,6 +1196,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 휘두르기(한손)"
+                  style={{ "font-size": "14px" }}
                   checked={action === "swingO2" && isAnimated}
                   onChange={() => {
                     if (!(action === "swingO2" && isAnimated)) {
@@ -1215,6 +1223,7 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 휘두르기(두손)"
+                  style={{ "font-size": "14px" }}
                   checked={action === "swingP1" && isAnimated}
                   onChange={() => {
                     if (!(action === "swingP1" && isAnimated)) {
