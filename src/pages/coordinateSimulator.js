@@ -1177,8 +1177,12 @@ const CoordinateSimulator = () => {
                   checked={action === "shoot1" && isAnimated}
                   onChange={() => {
                     if (!(action === "shoot1" && isAnimated)) {
-                      setAction("shoot1")
-                      setIsAnimated(true)
+                      if (!selectedWeapon) {
+                        window.alert("무기를 선택해주세요!")
+                      } else {
+                        setAction("shoot1")
+                        setIsAnimated(true)
+                      }
                     } else if (
                       selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
                       selectedWeapon?.typeInfo.subCategory === "Spear"
