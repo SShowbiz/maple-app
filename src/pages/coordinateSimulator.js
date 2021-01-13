@@ -112,7 +112,7 @@ const CoordinateSimulator = () => {
   const hairColorDisabled = useMemo(() => {
     if (disabledColorHairList.includes(selectedHair?.name)) return true
     return false
-  }, [selectedHair.name, disabledColorHairList])
+  }, [selectedHair, disabledColorHairList])
 
   const changeToList = useCallback((data, search) => {
     if (!data) return []
@@ -1033,10 +1033,11 @@ const CoordinateSimulator = () => {
                 <Form.Check
                   type="checkbox"
                   label="모션: 점프"
-                  checked={action === "jump"}
+                  checked={action === "jump" && isAnimated}
                   onChange={() => {
-                    if (action !== "jump") {
+                    if (!(action === "jump" && isAnimated)) {
                       setAction("jump")
+                      setIsAnimated(true)
                     } else if (
                       selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
                       selectedWeapon?.typeInfo.subCategory === "Spear"
