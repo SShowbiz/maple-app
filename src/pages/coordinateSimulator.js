@@ -107,6 +107,13 @@ const CoordinateSimulator = () => {
   const [action, setAction] = useState("stand1")
   const [isAnimated, setIsAnimated] = useState(false)
 
+  const disabledColorHairList = ["올빽 머리", "닭 머리"]
+
+  const hairColorDisabled = useMemo(() => {
+    if (disabledColorHairList.includes(selectedHair?.name)) return true
+    return false
+  }, [selectedHair.name, disabledColorHairList])
+
   const changeToList = useCallback((data, search) => {
     if (!data) return []
     if (search === "") {
@@ -219,6 +226,10 @@ const CoordinateSimulator = () => {
     amethyst: 7,
   }
 
+  const needToAddAdditionalWeapon =
+    selectedWeapon?.typeInfo.subCategory === "Cash" &&
+    (action === "stand2" || action === "walk2" || action === "swingP1")
+
   const hairBaseUri =
     selectedHair && hairBaseColor
       ? changeToUri(selectedHair.id + hairColorMap[hairBaseColor])
@@ -248,6 +259,9 @@ const CoordinateSimulator = () => {
   const shoesUri = selectedShoes ? changeToUri(selectedShoes.id) : ""
   const capeUri = selectedCape ? changeToUri(selectedCape.id) : ""
   const weaponUri = selectedWeapon ? changeToUri(selectedWeapon.id) : ""
+  const additionalWeaponUri = needToAddAdditionalWeapon
+    ? changeToUri(1432009)
+    : ""
 
   const imageHairBaseFaceBaseUri = useMemo(() => {
     return (
@@ -264,7 +278,8 @@ const CoordinateSimulator = () => {
           bottomUri +
           shoesUri +
           capeUri +
-          weaponUri
+          weaponUri +
+          additionalWeaponUri
       ) +
       "/" +
       action +
@@ -286,6 +301,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    additionalWeaponUri,
     isAnimated,
   ])
 
@@ -304,7 +320,8 @@ const CoordinateSimulator = () => {
           bottomUri +
           shoesUri +
           capeUri +
-          weaponUri
+          weaponUri +
+          additionalWeaponUri
       ) +
       "/" +
       action +
@@ -326,6 +343,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    additionalWeaponUri,
     isAnimated,
   ])
 
@@ -344,7 +362,8 @@ const CoordinateSimulator = () => {
           bottomUri +
           shoesUri +
           capeUri +
-          weaponUri
+          weaponUri +
+          additionalWeaponUri
       ) +
       "/" +
       action +
@@ -366,6 +385,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    additionalWeaponUri,
     isAnimated,
   ])
 
@@ -384,7 +404,8 @@ const CoordinateSimulator = () => {
           bottomUri +
           shoesUri +
           capeUri +
-          weaponUri
+          weaponUri +
+          additionalWeaponUri
       ) +
       "/" +
       action +
@@ -406,6 +427,7 @@ const CoordinateSimulator = () => {
     shoesUri,
     capeUri,
     weaponUri,
+    additionalWeaponUri,
     isAnimated,
   ])
 
@@ -415,6 +437,7 @@ const CoordinateSimulator = () => {
     const { data } = await axios.get(
       `https://maplestory.io/api/${REGION}/${VERSION}/item/category/equip`
     )
+    console.log(data.filter(item => item?.name === "죽창"))
     const hairObj = {}
     const faceObj = {}
     const skinObj = {}
@@ -431,9 +454,10 @@ const CoordinateSimulator = () => {
       if (
         item.typeInfo.subCategory === "Hair" &&
         item.name.includes("검은색") &&
-        !hairObj[item.name.replace("검은색", "")]
+        !hairObj[item.name]
       ) {
-        hairObj[item.name.replace("검은색", "")] = item
+        const newItemName = item.name.replace("검은색 ", "")
+        hairObj[item.name] = { ...item, name: newItemName }
       }
       if (item.typeInfo.subCategory === "Face" && !faceObj[item.name]) {
         faceObj[item.name] = item
@@ -601,7 +625,6 @@ const CoordinateSimulator = () => {
     },
     [defaultOptions]
   )
-
   const visualizationMode = useMemo(() => {
     const hairMixVal = hairMixValue * 1
     const faceMixVal = faceMixValue * 1
@@ -694,6 +717,7 @@ const CoordinateSimulator = () => {
     faceBaseColor,
     faceMixColor,
   ])
+  console.log(selectedWeapon)
   return (
     <Layout pageInfo={{ pageName: "coordinateSimulator" }}>
       <SEO title="Coordinate Simulator" />
@@ -726,6 +750,19 @@ const CoordinateSimulator = () => {
               partsData={hairData}
               partsList={hairList}
             />
+            {hairColorDisabled ? (
+              <Row>
+                <p
+                  style={{
+                    color: "red",
+                    "font-size": "8px",
+                  }}
+                >
+                  {" "}
+                  주의) 이 헤어는 염색을 지원하지 않습니다!{" "}
+                </p>
+              </Row>
+            ) : null}
             <ColorSelect
               colorList={[
                 { colorCode: "#dc143c", color: "red" },
@@ -741,12 +778,14 @@ const CoordinateSimulator = () => {
               setBaseColor={setHairBaseColor}
               mixColor={hairMixColor}
               setMixColor={setHairMixColor}
+              selectDisabled={hairColorDisabled}
             />
             <MixRatio
               mixValue={hairMixValue}
               setMixValue={setHairMixValue}
               selectedBaseColor={hairBaseColor}
               selectedMixColor={hairMixColor}
+              selectDisabled={hairColorDisabled}
             />
             <CoordinateParts
               partsName="성형"
@@ -910,7 +949,10 @@ const CoordinateSimulator = () => {
                     >
                       <SuspenseImg
                         src={imageHairBaseFaceBaseUri}
-                        style={{ "max-width": "170px" }}
+                        style={{
+                          "max-width": "190px",
+                          "background-color": "transparent",
+                        }}
                       />
                       {(visualizationMode === 1 || visualizationMode === 5) && (
                         <SuspenseImg
@@ -923,7 +965,8 @@ const CoordinateSimulator = () => {
                                 : 1 -
                                   (100 - faceMixValue * 1) /
                                     (100 - hairMixValue * 1),
-                            "max-width": "170px",
+                            "max-width": "190px",
+                            "background-color": "transparent",
                           }}
                         />
                       )}
@@ -938,7 +981,8 @@ const CoordinateSimulator = () => {
                                 : 1 -
                                   (100 - hairMixValue * 1) /
                                     (100 - faceMixValue * 1),
-                            "max-width": "170px",
+                            "max-width": "190px",
+                            "background-color": "transparent",
                           }}
                         />
                       )}
@@ -953,7 +997,8 @@ const CoordinateSimulator = () => {
                               visualizationMode === 5
                                 ? (hairMixValue * 1) / 100
                                 : (faceMixValue * 1) / 100,
-                            "max-width": "170px",
+                            "max-width": "190px",
+                            "background-color": "transparent",
                           }}
                         />
                       )}
@@ -961,10 +1006,34 @@ const CoordinateSimulator = () => {
                   </Row>
                 )}
               </Row>
+
               <Row className="justify-content-center">
+                <Button
+                  variant="primary"
+                  onClick={() => forceDownload(imageUri)}
+                >
+                  다운로드
+                </Button>
+              </Row>
+              <br />
+              <Row>
+                <p
+                  style={{
+                    color: "red",
+                    "font-size": "5px",
+                    "text-align": "center",
+                  }}
+                >
+                  주의) 되도록이면 코디 완성 후 모션 적용해주세요! 모션이
+                  존재하지 않는 경우 뜨지 않을 수 있습니다!
+                </p>
+              </Row>
+
+              <Row>
                 <Form.Check
                   type="checkbox"
                   label="모션: 점프"
+                  checked={action === "jump"}
                   onChange={() => {
                     if (action !== "jump") {
                       setAction("jump")
@@ -973,44 +1042,199 @@ const CoordinateSimulator = () => {
                       selectedWeapon?.typeInfo.subCategory === "Spear"
                     ) {
                       setAction("stand2")
-                    } else {
-                      setAction("stand1")
-                    }
-                  }}
-                />
-              </Row>
-              <Row className="justify-content-center">
-                <Form.Check
-                  type="checkbox"
-                  label="모션: 서 있기"
-                  checked={isAnimated}
-                  onChange={() => {
-                    if (isAnimated) {
                       setIsAnimated(false)
                     } else {
-                      setIsAnimated(true)
+                      setAction("stand1")
+                      setIsAnimated(false)
                     }
                   }}
                 />
               </Row>
-              <Row className="justify-content-center">
-                <p
-                  style={{
-                    color: "red",
-                    "font-size": "5px",
-                    "text-align": "center",
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 서 있기(한손)"
+                  checked={action === "stand1" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "stand1" && isAnimated)) {
+                      setAction("stand1")
+                      setIsAnimated(true)
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
                   }}
-                >
-                  주의) 되도록이면 코디 완성 후 모션 적용해주세요!
-                </p>
+                />
               </Row>
-              <Row className="justify-content-center">
-                <Button
-                  variant="primary"
-                  onClick={() => forceDownload(imageUri)}
-                >
-                  다운로드
-                </Button>
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 서 있기(두손)"
+                  checked={action === "stand2" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "stand2" && isAnimated)) {
+                      setAction("stand2")
+                      setIsAnimated(true)
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
+              </Row>
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 걷기(한손)"
+                  checked={action === "walk1" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "walk1" && isAnimated)) {
+                      setAction("walk1")
+                      setIsAnimated(true)
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
+              </Row>
+
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 걷기(두손)"
+                  checked={action === "walk2" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "walk2" && isAnimated)) {
+                      setAction("walk2")
+                      setIsAnimated(true)
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
+              </Row>
+
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 로프 타기"
+                  checked={action === "rope" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "rope" && isAnimated)) {
+                      setAction("rope")
+                      setIsAnimated(true)
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
+              </Row>
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 활 쏘기"
+                  checked={action === "shoot1" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "shoot1" && isAnimated)) {
+                      setAction("shoot1")
+                      setIsAnimated(true)
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
+              </Row>
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 휘두르기(한손)"
+                  checked={action === "swingO2" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "swingO2" && isAnimated)) {
+                      if (!selectedWeapon) {
+                        window.alert("무기를 선택해주세요!")
+                      } else {
+                        setAction("swingO2")
+                        setIsAnimated(true)
+                      }
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
+              </Row>
+              <Row>
+                <Form.Check
+                  type="checkbox"
+                  label="모션: 휘두르기(두손)"
+                  checked={action === "swingP1" && isAnimated}
+                  onChange={() => {
+                    if (!(action === "swingP1" && isAnimated)) {
+                      if (!selectedWeapon) {
+                        window.alert("무기를 선택해주세요!")
+                      } else {
+                        setAction("swingP1")
+                        setIsAnimated(true)
+                      }
+                    } else if (
+                      selectedWeapon?.typeInfo.subCategory === "Pole Arm" ||
+                      selectedWeapon?.typeInfo.subCategory === "Spear"
+                    ) {
+                      setAction("stand2")
+                      setIsAnimated(false)
+                    } else {
+                      setAction("stand1")
+                      setIsAnimated(false)
+                    }
+                  }}
+                />
               </Row>
             </div>
           </Col>
