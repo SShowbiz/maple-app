@@ -7,6 +7,7 @@ const MixRatio = ({
   setMixValue,
   selectedBaseColor,
   selectedMixColor,
+  selectDisabled,
 }) => {
   const colorMap = {
     red: "빨",
@@ -50,6 +51,7 @@ const MixRatio = ({
                 value={mixValue}
                 onChange={changeEvent => setMixValue(changeEvent.target.value)}
                 tooltipStyle={{ zIndex: 0 }}
+                disabled={selectDisabled}
               />
             </Col>
           </Row>

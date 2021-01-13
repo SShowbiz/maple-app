@@ -9,6 +9,7 @@ const ColorSelect = ({
   setBaseColor,
   mixColor,
   setMixColor,
+  selectDisabled,
 }) => {
   const styleObj = colorCode => {
     return {
@@ -24,12 +25,20 @@ const ColorSelect = ({
     }
   }
   const baseColorTable = colorList?.map(({ colorCode, color }) => (
-    <Button style={styleObj(colorCode)} onClick={() => setBaseColor(color)}>
+    <Button
+      style={styleObj(colorCode)}
+      onClick={() => setBaseColor(color)}
+      disabled={selectDisabled}
+    >
       {baseColor === color && <FontAwesomeIcon icon={faCheck} size="0.5x" />}
     </Button>
   ))
   const mixColorTable = colorList?.map(({ colorCode, color }) => (
-    <Button style={styleObj(colorCode)} onClick={() => setMixColor(color)}>
+    <Button
+      style={styleObj(colorCode)}
+      onClick={() => setMixColor(color)}
+      disabled={selectDisabled}
+    >
       {mixColor === color && <FontAwesomeIcon icon={faCheck} size="0.5x" />}
     </Button>
   ))
