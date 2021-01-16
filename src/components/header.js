@@ -1,6 +1,7 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
+import StoneSpirit from "../images/stone-spirits.png"
 
 const Header = ({ siteTitle }) => (
   <header
@@ -12,7 +13,7 @@ const Header = ({ siteTitle }) => (
       style={{
         margin: `0 auto`,
         maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
+        padding: `0.55rem 1.0875rem`,
       }}
     >
       <h1 style={{ margin: 0 }}>
@@ -23,6 +24,12 @@ const Header = ({ siteTitle }) => (
             textDecoration: `none`,
           }}
         >
+          <img
+            src={StoneSpirit}
+            style={{ width: "60px", "margin-bottom": "20px" }}
+            alt={<div />}
+          />
+          &nbsp;
           {siteTitle}
         </Link>
       </h1>
