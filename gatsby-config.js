@@ -26,6 +26,7 @@ module.exports = {
         background_color: `#20232a`,
         theme_color: `#20232a`,
         display: `minimal-ui`,
+        icon: "src/images/stoneSpirit.png",
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
