@@ -62,6 +62,7 @@ const CoordinateSimulator = () => {
   const [overallData, setOverallData] = useState(null)
   const [topData, setTopData] = useState(null)
   const [bottomData, setBottomData] = useState(null)
+  const [glovesData, setGlovesData] = useState(null)
   const [shoesData, setShoesData] = useState(null)
   const [capeData, setCapeData] = useState(null)
   const [weaponData, setWeaponData] = useState(null)
@@ -75,6 +76,7 @@ const CoordinateSimulator = () => {
   const [overallSearch, setOverallSearch] = useState("")
   const [topSearch, setTopSearch] = useState("")
   const [bottomSearch, setBottomSearch] = useState("")
+  const [glovesSearch, setGlovesSearch] = useState("")
   const [shoesSearch, setShoesSearch] = useState("")
   const [capeSearch, setCapeSearch] = useState("")
   const [weaponSearch, setWeaponSearch] = useState("")
@@ -91,6 +93,7 @@ const CoordinateSimulator = () => {
   const [selectedOverall, setSelectedOverall] = useState(null)
   const [selectedTop, setSelectedTop] = useState(null)
   const [selectedBottom, setSelectedBottom] = useState(null)
+  const [selectedGloves, setSelectedGloves] = useState(null)
   const [selectedShoes, setSelectedShoes] = useState(null)
   const [selectedCape, setSelectedCape] = useState(null)
   const [selectedWeapon, setSelectedWeapon] = useState(null)
@@ -164,6 +167,10 @@ const CoordinateSimulator = () => {
   const bottomList = useMemo(() => {
     return changeToSearchList(bottomData, bottomSearch)
   }, [bottomData, bottomSearch, changeToSearchList])
+
+  const glovesList = useMemo(() => {
+    return changeToSearchList(glovesData, glovesSearch)
+  }, [glovesData, glovesSearch, changeToSearchList])
 
   const shoesList = useMemo(() => {
     return changeToSearchList(shoesData, shoesSearch)
@@ -256,6 +263,7 @@ const CoordinateSimulator = () => {
   const overallUri = selectedOverall ? changeToUri(selectedOverall.id) : ""
   const topUri = selectedTop ? changeToUri(selectedTop.id) : ""
   const bottomUri = selectedBottom ? changeToUri(selectedBottom.id) : ""
+  const glovesUri = selectedGloves ? changeToUri(selectedGloves.id) : ""
   const shoesUri = selectedShoes ? changeToUri(selectedShoes.id) : ""
   const capeUri = selectedCape ? changeToUri(selectedCape.id) : ""
   const weaponUri = selectedWeapon ? changeToUri(selectedWeapon.id) : ""
@@ -276,6 +284,7 @@ const CoordinateSimulator = () => {
           overallUri +
           topUri +
           bottomUri +
+          glovesUri +
           shoesUri +
           capeUri +
           weaponUri +
@@ -298,6 +307,7 @@ const CoordinateSimulator = () => {
     overallUri,
     topUri,
     bottomUri,
+    glovesUri,
     shoesUri,
     capeUri,
     weaponUri,
@@ -318,6 +328,7 @@ const CoordinateSimulator = () => {
           overallUri +
           topUri +
           bottomUri +
+          glovesUri +
           shoesUri +
           capeUri +
           weaponUri +
@@ -340,6 +351,7 @@ const CoordinateSimulator = () => {
     overallUri,
     topUri,
     bottomUri,
+    glovesUri,
     shoesUri,
     capeUri,
     weaponUri,
@@ -360,6 +372,7 @@ const CoordinateSimulator = () => {
           overallUri +
           topUri +
           bottomUri +
+          glovesUri +
           shoesUri +
           capeUri +
           weaponUri +
@@ -382,6 +395,7 @@ const CoordinateSimulator = () => {
     overallUri,
     topUri,
     bottomUri,
+    glovesUri,
     shoesUri,
     capeUri,
     weaponUri,
@@ -402,6 +416,7 @@ const CoordinateSimulator = () => {
           overallUri +
           topUri +
           bottomUri +
+          glovesUri +
           shoesUri +
           capeUri +
           weaponUri +
@@ -424,6 +439,7 @@ const CoordinateSimulator = () => {
     overallUri,
     topUri,
     bottomUri,
+    glovesUri,
     shoesUri,
     capeUri,
     weaponUri,
@@ -447,6 +463,7 @@ const CoordinateSimulator = () => {
     const overallObj = {}
     const topObj = {}
     const bottomObj = {}
+    const glovesObj = {}
     const shoesObj = {}
     const capeObj = {}
     const weaponObj = {}
@@ -489,6 +506,9 @@ const CoordinateSimulator = () => {
       if (item.typeInfo.subCategory === "Bottom" && !bottomObj[item.name]) {
         bottomObj[item.name] = item
       }
+      if (item.typeInfo.subCategory === "Glove" && !glovesObj[item.name]) {
+        glovesObj[item.name] = item
+      }
       if (item.typeInfo.subCategory === "Shoes" && !shoesObj[item.name]) {
         shoesObj[item.name] = item
       }
@@ -508,6 +528,7 @@ const CoordinateSimulator = () => {
     setOverallData(changeToList(overallObj, ""))
     setTopData(changeToList(topObj, ""))
     setBottomData(changeToList(bottomObj, ""))
+    setGlovesData(changeToList(glovesObj, ""))
     setShoesData(changeToList(shoesObj, ""))
     setCapeData(changeToList(capeObj, ""))
     setWeaponData(changeToList(weaponObj, ""))
@@ -707,6 +728,7 @@ const CoordinateSimulator = () => {
     selectedOverall,
     selectedTop,
     selectedBottom,
+    selectedGloves,
     selectedShoes,
     selectedCape,
     selectedWeapon,
@@ -881,6 +903,15 @@ const CoordinateSimulator = () => {
               }}
               partsData={bottomData}
               partsList={bottomList}
+            />
+            <CoordinateParts
+              partsName="장갑"
+              searchKeyWord={glovesSearch}
+              setSearchWord={setGlovesSearch}
+              selectedParts={selectedGloves}
+              setSelectedParts={setSelectedGloves}
+              partsData={glovesData}
+              partsList={glovesList}
             />
             <CoordinateParts
               partsName="신발"
