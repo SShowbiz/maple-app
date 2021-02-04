@@ -18,9 +18,8 @@ import bossArmorStarforceEnforce from "../img/spellTraces/bossArmorStarforceEnfo
 import bossArmorStats from "../img/spellTraces/bossArmorStats.svg"
 import bossGloveStarforceEnforce from "../img/spellTraces/bossGloveStarforceEnforce.svg"
 import bossGloveStats from "../img/spellTraces/bossGloveStats.svg"
+import { REGION, VERSION } from "../assets/itemConfig"
 
-const VERSION = "342"
-const REGION = "KMS"
 const ascending = (firstItem, secondItem) => {
   return firstItem.name < secondItem.name
     ? -1

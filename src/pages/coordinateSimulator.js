@@ -21,9 +21,7 @@ import SEO from "../components/seo"
 import CoordinateParts from "../components/coordinateParts"
 import ColorSelect from "../components/colorSelect"
 import MixRatio from "../components/mixRatio"
-
-const VERSION = "342"
-const REGION = "KMS"
+import { REGION, VERSION } from "../assets/itemConfig"
 
 const CoordinateSimulator = () => {
   const SuspenseImg = ({ src, ...rest }) => {
@@ -739,7 +737,6 @@ const CoordinateSimulator = () => {
     faceBaseColor,
     faceMixColor,
   ])
-  console.log(selectedWeapon)
   return (
     <Layout pageInfo={{ pageName: "coordinateSimulator" }}>
       <SEO title="Coordinate Simulator" />

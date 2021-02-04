@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Row, Dropdown, Form, Figure, Button } from "react-bootstrap"
-
-const VERSION = "342"
-const REGION = "KMS"
+import { REGION, VERSION } from "../assets/itemConfig"
 
 const CoordinateParts = ({
   partsName,
